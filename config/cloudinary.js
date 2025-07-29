@@ -6,6 +6,7 @@ function connectToCloudinary() {
         api_key: process.env.API_KEY,
         api_secret: process.env.API_SECRET
     });
+    
     console.log("Cloudinary running on cloud:", cloudinary.config().cloud_name);
 }
 
