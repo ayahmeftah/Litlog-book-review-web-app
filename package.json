@@ -18,11 +18,13 @@
   },
   "homepage": "https://github.com/ayahmeftah/Litlog-book-review-web-app#readme",
   "dependencies": {
+    "cloudinary": "^2.7.0",
     "dotenv": "^17.2.1",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "method-override": "^3.0.0",
     "mongoose": "^8.16.5",
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2"
   }
 }
