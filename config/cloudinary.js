@@ -10,5 +10,4 @@ function connectToCloudinary() {
     console.log("Cloudinary running on cloud:", cloudinary.config().cloud_name);
 }
 
-
 module.exports = connectToCloudinary
