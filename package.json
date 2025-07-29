@@ -19,6 +19,7 @@
   "homepage": "https://github.com/ayahmeftah/Litlog-book-review-web-app#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "bootstrap": "^5.3.7",
     "cloudinary": "^2.7.0",
     "dotenv": "^17.2.1",
     "ejs": "^3.1.10",
