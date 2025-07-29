@@ -6,7 +6,6 @@ const methodOverride = require("method-override")
 const connectToDB = require("./config/db")
 const connectToCloudinary = require("./config/cloudinary")
 
-
 // Middleware
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
