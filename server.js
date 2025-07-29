@@ -4,9 +4,8 @@ const dotenv = require("dotenv").config()
 const morgan = require("morgan")
 const methodOverride = require("method-override")
 const connectToDB = require("./config/db")
-const cloudinary = require("./config/cloudinary")
+const connectToCloudinary = require("./config/cloudinary")
 
-console.log("Cloudinary ready:", cloudinary.config().cloud_name);
 
 // Middleware
 app.use(express.static('public'));
@@ -17,7 +16,7 @@ app.use(morgan("dev"))
 
 
 connectToDB()
-
+connectToCloudinary()
 
 // Routes
 
