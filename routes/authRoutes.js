@@ -3,7 +3,7 @@ const router = require("express").Router()
 const bcrypt = require("bcrypt")
 
 router.get('/sign-up', async (req,res)=>{
-    res.render("auth/sign-up.ejs",{ errorMessages: null})
+    res.render("auth/sign-up.ejs",{ errorMessages: null, passwordErrors: [] })
 })
 
 router.post("/sign-up", async (req, res) => {
@@ -11,10 +11,12 @@ router.post("/sign-up", async (req, res) => {
     const { name, username, email, password, role } = req.body
 
     const errorMessages = {}
+    const passwordErrors = []
 
     if (!name) errorMessages.name = "Name is required."
     if (!username) errorMessages.username = "Username is required."
     if (!email) errorMessages.email = "Email is required."
+    if (!password) passwordErrors.push("Password is required.")
     if (!role) errorMessages.role = "Role is required."
 
     
@@ -23,7 +25,39 @@ router.post("/sign-up", async (req, res) => {
       errorMessages.email = "Please enter a valid email."
     }
 
-    
+    // Password Requirements (From Stack Overflow: https://stackoverflow.com/questions/12090077/javascript-regular-expression-password-validation-having-special-characters )
+    if (password) {
+      const noWhiteSpace = /^\S*$/
+      if (!noWhiteSpace.test(password)) {
+        passwordErrors.push("Password must not contain whitespaces.")
+      }
+
+      const hasUpper = /^(?=.*[A-Z]).*$/
+      if (!hasUpper.test(password)) {
+        passwordErrors.push("Password must have at least one uppercase letter.")
+      }
+
+      const hasLower = /^(?=.*[a-z]).*$/
+      if (!hasLower.test(password)) {
+        passwordErrors.push("Password must have at least one lowercase letter.")
+      }
+
+      const hasDigit = /^(?=.*[0-9]).*$/
+      if (!hasDigit.test(password)) {
+        passwordErrors.push("Password must contain at least one digit.")
+      }
+
+      const hasSpecial = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/
+      if (!hasSpecial.test(password)) {
+        passwordErrors.push("Password must contain at least one special character.")
+      }
+
+      const validLength = /^.{8,16}$/
+      if (!validLength.test(password)) {
+        passwordErrors.push("Password must be 8–16 characters long.")
+      }
+    }
+
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
       if (existingUser.username === username) {
@@ -35,9 +69,10 @@ router.post("/sign-up", async (req, res) => {
     }
 
     
-    if (errorMessages.name || errorMessages.username || errorMessages.email || errorMessages.role) {
+    if (errorMessages.name || errorMessages.username || errorMessages.email || errorMessages.role || passwordErrors.length > 0) {
      res.render("auth/sign-up.ejs", {
-        errorMessages
+        errorMessages,
+        passwordErrors
       })
     }
 
@@ -55,7 +90,8 @@ router.post("/sign-up", async (req, res) => {
   } catch (error) {
     console.error("Signup error:", error);
     res.render("auth/sign-up.ejs", {
-      errorMessages: { general: "Something went wrong. Please try again." }
+      errorMessages: { general: "Something went wrong. Please try again." },
+      passwordErrors: []
     });
   }
 });
