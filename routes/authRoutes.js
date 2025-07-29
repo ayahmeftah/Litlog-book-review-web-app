@@ -70,7 +70,7 @@ router.post("/sign-up", async (req, res) => {
 
     
     if (errorMessages.name || errorMessages.username || errorMessages.email || errorMessages.role || passwordErrors.length > 0) {
-     res.render("auth/sign-up.ejs", {
+     return res.render("auth/sign-up.ejs", {
         errorMessages,
         passwordErrors
       })
@@ -85,7 +85,7 @@ router.post("/sign-up", async (req, res) => {
       password: hashedPassword
     })
 
-    res.redirect("/auth/login");
+    return res.redirect("/auth/login");
 
   } catch (error) {
     console.error("Signup error:", error);
