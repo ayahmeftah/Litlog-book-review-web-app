@@ -23,8 +23,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['author', 'reader'],
         required: true
-    },
-    profileImageUrl: String
+    }
 })
 
 module.exports = mongoose.model('User', userSchema)
