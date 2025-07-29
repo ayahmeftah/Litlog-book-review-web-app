@@ -10,7 +10,56 @@
 <body>
 
   <form action="/auth/sign-up" method="post">
-    
+    <h2>Sign Up</h2>
+
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name">
+    <% if (errorMessages && errorMessages.name) { %>
+      <p class="error"><%= errorMessages.name %></p>
+    <% } %>
+
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username">
+    <% if (errorMessages && errorMessages.username) { %>
+      <p class="error"><%= errorMessages.username %></p>
+    <% } %>
+
+    <label for="email">Email:</label>
+    <input type="text" name="email" id="email">
+    <% if (errorMessages && errorMessages.email) { %>
+      <p class="error"><%= errorMessages.email %></p>
+    <% } %>
+
+    <label for="role">Role:</label>
+    <select name="role" id="role">
+      <option value="">Select Role</option>
+      <option value="author">Author</option>
+      <option value="reader">Reader</option>
+    </select>
+    <% if (errorMessages && errorMessages.role) { %>
+      <p class="error"><%= errorMessages.role %></p>
+    <% } %>
+
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password">
+    <button type="button" id="show-password" >Show</button>
+
+    <% if (passwordErrors && passwordErrors.length > 0) { %>
+      <ul class="requirements">
+        <% passwordErrors.forEach(error => { %>
+          <li style="color: red;"><%= error %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+
+    <button type="submit">Sign Up</button>
+
+    <% if (errorMessages && errorMessages.general) { %>
+      <p class="error"><%= errorMessages.general %></p>
+    <% } %>
+
+    <p>Already have an account? <a href="/auth/login">Login</a></p>
+
   </form>
 
 </body>
