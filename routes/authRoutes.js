@@ -85,7 +85,7 @@ router.post("/sign-up", async (req, res) => {
       password: hashedPassword
     })
 
-    return res.redirect("/auth/login");
+    return res.redirect("/books");
 
   } catch (error) {
     console.error("Signup error:", error);
@@ -135,7 +135,7 @@ router.post("/login", async (req, res) => {
       role: user.role
     };
 
-    res.send(`<h2>Hi ${user.name}! you are an ${user.role}</h2><p>You're now logged in.</p><a href="/auth/logout">Logout</a>`)
+    res.redirect("/books")
   } catch (error) {
     console.error("Login error:", error.message, error.stack)
     res.render("auth/login.ejs", {
