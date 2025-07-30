@@ -3,10 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title><%= foundBook.title %></title>
 </head>
 <body>
-    <h1>Book Details</h1>
-    <%= foundBook.title %>
+    <%- include("../partials/navbar") %>
+    <div class="container book-detail-container">
+    <div class="row align-items-start">
+      <div class="col-md-4 mb-4">
+        <% if (foundBook.BookImage) { %>
+          <img src="<%= foundBook.BookImage %>" alt="Book Cover" class="book-image-details" />
+        <% } else { %>
+          <img src="/images/default-book.jpg" alt="Default Book Cover" class="book-image" />
+        <% } %>
+      </div>
+      <div class="col-md-8 book-info">
+        <h2><%= foundBook.title %></h2>
+        <p><strong>Description:</strong> <%= foundBook.description %></p>
+        <p><strong>Genre:</strong> <%= foundBook.genre %></p>
+        <p><strong>Year Published:</strong> <%= foundBook.yearOfPublication %></p>
+        <p><strong>Average Rating:</strong> 
+          <% if (foundBook.averageRating > 0) { %>
+            <span class="rating-badge"><%= foundBook.averageRating.toFixed(1) %> / 5</span>
+          <% } else { %>
+            <span class="text-muted">Not rated yet</span>
+          <% } %>
+        </p>
+        <p><strong>Author:</strong> <%= foundBook.authorId.name || foundBook.authorId.username  %></p>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

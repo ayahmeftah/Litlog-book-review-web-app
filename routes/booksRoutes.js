@@ -45,10 +45,10 @@ router.post("/", requireAuthor, upload.single("bookImage"), async (req, res) => 
 
 router.get("/:id", async (req,res)=>{
     try {
-        const foundBook = await Book.findById(req.params.id)
+        const foundBook = await Book.findById(req.params.id).populate("authorId")
         res.render("books/book-details.ejs",{foundBook})
     } catch (error) {
-        console.log()
+        console.log(error)
     }
 })
 
