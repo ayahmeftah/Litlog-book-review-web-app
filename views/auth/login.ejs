@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/showPassword.js"></script>
+</head>
+<body>
+
+  <form action="/auth/login" method="post">
+    <h2>Login</h2>
+
+    <label for="identifier">Username or Email:</label>
+    <input type="text" name="identifier" id="identifier">
+    <% if (errorMessages && errorMessages.identifier) { %>
+      <p class="error"><%= errorMessages.identifier %></p>
+    <% } %>
+
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password">
+    <button type="button" id="show-password" >Show</button>
+
+    <% if (errorMessages && errorMessages.password) { %>
+      <p class="error"><%= errorMessages.password %></p>
+    <% } %>
+
+    <% if (errorMessages && errorMessages.general) { %>
+      <p class="error"><%= errorMessages.general %></p>
+    <% } %>
+
+    <button type="submit">Login</button>
+    <p>Don't have an account? <a href="/auth/sign-up">Sign Up</a></p>
+  </form>
+
+</body>
+</html>

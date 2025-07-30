@@ -2,6 +2,7 @@ const express = require("express")
 const app = express()
 const dotenv = require("dotenv").config()
 const morgan = require("morgan")
+const session = require("express-session");
 const methodOverride = require("method-override")
 const connectToDB = require("./config/db")
 const connectToCloudinary = require("./config/cloudinary")
@@ -13,7 +14,14 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride("_method"));
 app.use(morgan("dev"))
-app.use("/css", express.static("node_modules/bootstrap/dist/css"));
+app.use("/css", express.static("node_modules/bootstrap/dist/css"))
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 
 

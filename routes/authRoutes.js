@@ -98,11 +98,51 @@ router.post("/sign-up", async (req, res) => {
 
 
 router.get("/login", (req, res) => {
-  res.render("auth/login.ejs")
+  res.render("auth/login.ejs",{errorMessages: null})
 })
 
+router.post("/login", async (req, res) => {
+  try {
+    const { identifier, password } = req.body
+    const errorMessages = {}
 
+    if (!identifier || !password) {
+      errorMessages.general = "Both fields are required."
 
+      return res.render("auth/login.ejs", { errorMessages })
+    }
+
+    const user = await User.findOne({
+      $or: [{ username: identifier }, { email: identifier }],
+    })
+
+    if (!user) {
+      errorMessages.identifier = "No user found with that username or email."
+      return res.render("auth/login.ejs", { errorMessages })
+    }
+
+    const passwordIsValid = bcrypt.compareSync(password, user.password)
+    if (!passwordIsValid) {
+      errorMessages.password = "Incorrect password."
+      return res.render("auth/login.ejs", { errorMessages })
+    }
+
+    req.session.user = {
+      _id: user._id,
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      role: user.role
+    };
+
+    res.send(`<h2>Hi ${user.name}! you are an ${user.role}</h2><p>You're now logged in.</p>`)
+  } catch (error) {
+    console.error("Login error:", error.message, error.stack)
+    res.render("auth/login.ejs", {
+      errorMessages: { general: "Something went wrong. Please try again." },
+    })
+  }
+});
 
 
 module.exports = router
