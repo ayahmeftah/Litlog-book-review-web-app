@@ -9,6 +9,28 @@
 </head>
 <body>
     <%- include("../partials/navbar") %>
-    <h1>Add a New Book</h1>
+    
+    
+    <form action="/books/new" method="post">
+        <h1>Add a New Book</h1>
+        
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title">
+    
+        <label for="yearOfPublication">Published On</label>
+        <input type="number" name="yearOfPublication" id="yearOfPublication">
+    
+        <label for="genre">Genre</label>
+        <input type="text" name="genre" id="genre">
+    
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description">
+    
+        <label for="BookImage">Book Cover Image</label>
+        <input type="text" name="" id="">
+
+        <button>Add Book</button>
+    </form>
+
 </body>
 </html>

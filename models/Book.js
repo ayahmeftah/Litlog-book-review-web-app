@@ -15,6 +15,18 @@ const bookSchema = new mongoose.Schema({
     },
     genre: {
         type: String,
+        enum: [
+            "Fantasy",
+            "Science Fiction",
+            "Mystery",
+            "Horror",
+            "Childerns",
+            "Romance",
+            "Non-Fiction",
+            "Historical Fiction",
+            "Adventure",
+            "Young Adults"
+        ],
         required: true
     },
     authorId: {
@@ -22,7 +34,7 @@ const bookSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    BookImageUrl: String,
+    BookImage: String,
     averageRating: {
         type: Number,
         default: 0
