@@ -135,7 +135,7 @@ router.post("/login", async (req, res) => {
       role: user.role
     };
 
-    res.send(`<h2>Hi ${user.name}! you are an ${user.role}</h2><p>You're now logged in.</p>`)
+    res.send(`<h2>Hi ${user.name}! you are an ${user.role}</h2><p>You're now logged in.</p><a href="/auth/logout">Logout</a>`)
   } catch (error) {
     console.error("Login error:", error.message, error.stack)
     res.render("auth/login.ejs", {
@@ -144,5 +144,9 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/logout", (req, res) => {
+    req.session.destroy()
+    res.redirect("/auth/login")
+})
 
 module.exports = router
