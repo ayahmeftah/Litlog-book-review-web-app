@@ -1,5 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+body {
+    background-color: #f3f1ec;
+    font-family: "Josefin Sans", sans-serif;
+}
+
 nav {
-    background-color: #e3e0d6; 
+    background-color: #d8d6cc; 
     box-shadow: 5px 5px 8px -6px black;
 }
 

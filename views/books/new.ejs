@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Create Book</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <title>Add Book</title>
 </head>
 <body>
-
-  <%- include('../partials/navbar') %>
-
-  <h1>Create a New Book</h1>
+  <%- include("../partials/navbar") %>
+  <h1>Add a New Book</h1>
 
   <% if (error) { %>
     <p style="color: red;"><%= error %></p>
@@ -42,8 +43,8 @@
     <label for="bookImage">Book Cover:</label><br>
     <input type="file" name="bookImage" id="bookImage"><br><br>
 
-    <button type="submit">Create Book</button>
+    <button type="submit">Add Book</button>
   </form>
-
+  
 </body>
 </html>
