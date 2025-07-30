@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
         const books = await Book.find().populate("authorId")
         res.render("books/all-books.ejs", { books })
     } catch (error) {
-        console.error("Error fetching books:", error)
+        console.log("Error fetching books:", error)
         res.render("books/all-books.ejs", { books: [] })
     }
 })
@@ -38,12 +38,19 @@ router.post("/", requireAuthor, upload.single("bookImage"), async (req, res) => 
     await newBook.save()
     res.redirect("/books")
   } catch (error) {
-    console.error("Book creation error:", error)
+    console.log("Book creation error:", error)
     res.render("books/new.ejs", { error: "Something went wrong. Please try again." })
   }
 })
 
-
+router.get("/:id", async (req,res)=>{
+    try {
+        const foundBook = await Book.findById(req.params.id)
+        res.render("books/book-details.ejs",{foundBook})
+    } catch (error) {
+        console.log()
+    }
+})
 
 
 module.exports = router

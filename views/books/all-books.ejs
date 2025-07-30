@@ -21,6 +21,7 @@
           <h3 class="book-title"><%= book.title %></h3>
           <p class="book-author">By <%= book.authorId.name || book.authorId.username %></p>
           <p class="book-genre"><%= book.genre %></p>
+          <a href="/books/<%= book._id %>">View</a>
         </div>
       <% }) %>
     <% } %>

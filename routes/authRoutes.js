@@ -88,7 +88,7 @@ router.post("/sign-up", async (req, res) => {
     return res.redirect("/books");
 
   } catch (error) {
-    console.error("Signup error:", error);
+    console.log("Signup error:", error);
     res.render("auth/sign-up.ejs", {
       errorMessages: { general: "Something went wrong. Please try again." },
       passwordErrors: []
@@ -137,7 +137,7 @@ router.post("/login", async (req, res) => {
 
     res.redirect("/books")
   } catch (error) {
-    console.error("Login error:", error.message, error.stack)
+    console.log("Login error:", error.message, error.stack)
     res.render("auth/login.ejs", {
       errorMessages: { general: "Something went wrong. Please try again." },
     })
