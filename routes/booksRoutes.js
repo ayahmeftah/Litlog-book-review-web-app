@@ -5,6 +5,9 @@ router.get('/', async (req,res) =>{
     res.render('books/all-books.ejs')
 })
 
+router.get('/new', async (req,res) => {
+    res.render('books/new.ejs')
+})
 
 
 
