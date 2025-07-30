@@ -17,4 +17,8 @@ function init() {
   }
 }
 
+router.get("/login", (req, res) => {
+  res.render("auth/login.ejs")
+})
+
 document.addEventListener("DOMContentLoaded", init);
