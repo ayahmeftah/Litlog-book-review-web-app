@@ -8,6 +8,7 @@ const connectToDB = require("./config/db")
 const connectToCloudinary = require("./config/cloudinary")
 
 const authRoutes = require("./routes/authRoutes")
+const booksRoutes = require("./routes/booksRoutes")
 
 // Middleware
 app.use(express.static('public'));
@@ -34,6 +35,7 @@ connectToDB()
 connectToCloudinary()
 
 // Routes
+app.use("/books", booksRoutes)
 app.use("/auth", authRoutes)
 
 
