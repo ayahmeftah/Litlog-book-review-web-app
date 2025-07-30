@@ -2,6 +2,7 @@ const Book = require('../models/Book')
 const router = require('express').Router()
 const setupMulter = require("../middleware/multer")
 const upload = setupMulter()
+const { requireLogin, requireAuthor } = require("../middleware/authMiddleware")
 
 router.get('/', async (req, res) => {
     try {
@@ -13,33 +14,33 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/new', async (req, res) => {
-    res.render('books/new.ejs', { error: null })
+router.get('/new', requireAuthor ,async (req, res) => {
+    res.render('books/new.ejs', {error : null})
 })
 
-router.post("/", async (req, res) => {
-    try {
-        const { title, description, yearOfPublication, genre } = req.body;
+router.post("/", requireAuthor, upload.single("bookImage"), async (req, res) => {
+  try {
+    const { title, description, yearOfPublication, genre } = req.body;
 
-        if (!title || !description || !yearOfPublication || !genre) {
-            return res.render("books/new.ejs", { error: "All fields are required." })
-        }
-
-        const newBook = new Book({
-            title,
-            description,
-            yearOfPublication,
-            genre,
-            authorId: req.session.user._id,
-            BookImage: req.file?.path || null,
-        })
-
-        await newBook.save()
-        res.redirect("/books")
-    } catch (error) {
-        console.error("Book creation error:", error)
-        res.render("books/new.ejs", { error: "Something went wrong. Please try again." })
+    if (!title || !description || !yearOfPublication || !genre) {
+      return res.render("books/new.ejs", { error: "All fields are required." })
     }
+
+    const newBook = new Book({
+      title,
+      description,
+      yearOfPublication,
+      genre,
+      authorId: req.session.user._id,
+      BookImage: req.file?.path || null,
+    })
+
+    await newBook.save()
+    res.redirect("/books")
+  } catch (error) {
+    console.error("Book creation error:", error)
+    res.render("books/new.ejs", { error: "Something went wrong. Please try again." })
+  }
 });
 
 
