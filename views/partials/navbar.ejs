@@ -1,0 +1,17 @@
+<nav class="navbar navbar-expand-lg navbar-light px-4">
+  <div class="container-fluid">
+    <a href="/" class="navbar-brand d-flex align-items-center">
+      <img src="/images/litlog-logo1.png" alt="Litlog Website Logo" class="logo-img">
+    </a>
+
+    <div class="ms-auto d-flex align-items-center">
+      <% if (user) { %>
+        <span class="me-3">Welcome, <strong><%= user.name %></strong></span>
+        <a href="/auth/logout"\>Logout</a>
+      <% } else { %>
+        <a href="/auth/sign-up">Sign Up</a> |
+        <a href="/auth/login">Login</a>
+      <% } %>
+    </div>
+  </div>
+</nav>
