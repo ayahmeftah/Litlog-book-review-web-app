@@ -97,6 +97,9 @@ router.post("/sign-up", async (req, res) => {
 });
 
 
+router.get("/login", (req, res) => {
+  res.render("auth/login.ejs")
+})
 
 
 
