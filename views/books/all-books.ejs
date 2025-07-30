@@ -10,5 +10,21 @@
 <body>
     <%- include("../partials/navbar") %>
     <h1>Browse Books</h1>
+
+    <div class="books-container">
+    <% if (books.length === 0) { %>
+      <p>No books found</p>
+    <% } else { %>
+      <% books.forEach(book => { %>
+        <div class="book-card">
+          <img src="<%= book.BookImage %>" alt="<%= book.title %> Book Cover" class="book-image" />
+          <h3 class="book-title"><%= book.title %></h3>
+          <p class="book-author">By <%= book.authorId.name || book.authorId.username %></p>
+          <p class="book-genre"><%= book.genre %></p>
+        </div>
+      <% }) %>
+    <% } %>
+    </div>
+
 </body>
 </html>

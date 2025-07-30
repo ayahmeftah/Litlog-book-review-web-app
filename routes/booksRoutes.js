@@ -41,7 +41,7 @@ router.post("/", requireAuthor, upload.single("bookImage"), async (req, res) => 
     console.error("Book creation error:", error)
     res.render("books/new.ejs", { error: "Something went wrong. Please try again." })
   }
-});
+})
 
 
 
