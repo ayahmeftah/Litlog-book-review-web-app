@@ -5,9 +5,12 @@ const cloudinary = require("cloudinary").v2;
 function setupMulter() {
   const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
-    params: {
-      folder: "book-covers",
-      allowed_formats: ["jpg", "jpeg", "png"]
+    params: async (req, file) => {
+      return {
+        folder: "book-covers",
+        allowed_formats: ["jpg", "jpeg", "png"],
+        public_id: file.originalname.split('.')[0] + '-' + Date.now(),
+      };
     },
   });
 
