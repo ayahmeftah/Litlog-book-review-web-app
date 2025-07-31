@@ -43,12 +43,43 @@ router.post("/", requireAuthor, upload.single("bookImage"), async (req, res) => 
   }
 })
 
-router.get("/:id", async (req,res)=>{
+router.get("/:id", async (req, res) => {
     try {
-        const foundBook = await Book.findById(req.params.id).populate("authorId")
-        res.render("books/book-details.ejs",{foundBook})
+        const foundBook = await Book.findById(req.params.id).populate("authorId");
+        let userBookList = null;
+        if (req.session.user) {
+            userBookList = await UserBookList.findOne({
+                userId: req.session.user._id,
+                bookId: foundBook._id,
+            });
+        }
+
+        // In booksRoutes.js GET /:id
+        let label = "Add to Shelf ▼";
+        let btnClass = "btn-outline-secondary";
+
+        if (userBookList?.status === "want to read") {
+            label = "Want to Read ▼";
+            btnClass = "btn-primary";
+        } else if (userBookList?.status === "reading") {
+            label = "Currently Reading ▼";
+            btnClass = "btn-warning text-dark";
+        } else if (userBookList?.status === "read") {
+            label = "Read ▼";
+            btnClass = "btn-success";
+        }
+
+        res.render("books/book-details.ejs", {
+            foundBook,
+            userBookList,
+            user: req.session.user,
+            label,
+            btnClass
+        });
+
+
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 })
 

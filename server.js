@@ -5,7 +5,6 @@ const morgan = require("morgan")
 const session = require("express-session");
 const methodOverride = require("method-override")
 const connectToDB = require("./config/db")
-const connectToCloudinary = require("./config/cloudinary")
 
 const authRoutes = require("./routes/authRoutes")
 const booksRoutes = require("./routes/booksRoutes")
@@ -16,6 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride("_method"));
 app.use(morgan("dev"))
 app.use("/css", express.static("node_modules/bootstrap/dist/css"))
+app.use("/js", express.static("node_modules/bootstrap/dist/js"))
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -32,7 +32,6 @@ app.use((req, res, next) => {
 
 
 connectToDB()
-connectToCloudinary()
 
 // Routes
 app.use("/books", booksRoutes)

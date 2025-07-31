@@ -35,6 +35,7 @@ const bookSchema = new mongoose.Schema({
         required: true
     },
     BookImage: String,
+    BookImagePublicId: String,
     averageRating: {
         type: Number,
         default: 0

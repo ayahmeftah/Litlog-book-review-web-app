@@ -87,3 +87,24 @@ nav {
     padding: 5px 10px;
     border-radius: 5px;
 }
+
+.modal-content {
+  border-radius: 20px;
+}
+.modal-body .btn {
+  border-radius: 40px;
+  font-size: 1.1rem;
+}
+
+.shelf-btn, .delete-edit-btn {
+  font-size: 1.2rem;
+  font-weight: 500;
+  border-radius: 50px;
+  margin-top: 10px;
+  margin-left: 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.shelf-btn:hover {
+  transform: scale(1.02);
+}
