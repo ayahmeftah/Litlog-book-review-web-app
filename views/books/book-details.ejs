@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,7 +9,6 @@
         <%= foundBook.title %>
     </title>
 </head>
-
 <body>
     <%- include("../partials/navbar") %>
 
@@ -34,9 +32,7 @@
                             <button class="btn <%= btnClass %> shelf-btn w-75 py-3" data-bs-toggle="modal" data-bs-target="#shelfModal">
                             <%= label %>
                             </button>
-                            <% } %>
-
-
+                        <% } %>
 
                 </div>
                 <div class="col-md-8 book-info">
@@ -83,15 +79,13 @@
                                 class="btn <%= current === 'want to read' ? 'btn-primary text-white' : 'btn-outline-dark' %>">Want
                                 to read</button>
                             <button name="status" value="reading"
-                                class="btn <%= current === 'reading' ? 'btn-warning text-dark' : 'btn-outline-dark' %>">Currently
-                                reading</button>
+                                class="btn <%= current === 'reading' ? 'btn-warning text-dark' : 'btn-outline-dark' %>">Currently reading</button>
                             <button name="status" value="read"
                                 class="btn <%= current === 'read' ? 'btn-success text-white' : 'btn-outline-dark' %>">Read</button>
 
                             <% if (userBookList) { %>
-                                <button name="status" value="remove" class="btn btn-outline-danger mt-2">Remove from
-                                    shelf</button>
-                                <% } %>
+                                <button name="status" value="remove" class="btn btn-outline-danger mt-2">Remove from shelf</button>
+                            <% } %>
                     </div>
                 </form>
             </div>
