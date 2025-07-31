@@ -8,4 +8,5 @@ cloudinary.config({
 
 console.log("Cloudinary configured for cloud:", cloudinary.config().cloud_name);
 
+
 module.exports = cloudinary
