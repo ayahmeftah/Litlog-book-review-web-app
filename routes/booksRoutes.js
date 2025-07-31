@@ -3,6 +3,8 @@ const router = require('express').Router()
 const setupMulter = require("../middleware/multer")
 const upload = setupMulter()
 const { requireLogin, requireAuthor } = require("../middleware/authMiddleware")
+const UserBookList = require("../models/UserBookList")
+const cloudinary = require("../config/cloudinary")
 
 router.get('/', async (req, res) => {
     try {
@@ -14,33 +16,34 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/new', requireAuthor ,async (req, res) => {
-    res.render('books/new.ejs', {error : null})
+router.get('/new', requireAuthor, async (req, res) => {
+    res.render('books/new.ejs', { error: null })
 })
 
 router.post("/", requireAuthor, upload.single("bookImage"), async (req, res) => {
-  try {
-    const { title, description, yearOfPublication, genre } = req.body;
+    try {
+        const { title, description, yearOfPublication, genre } = req.body;
 
-    if (!title || !description || !yearOfPublication || !genre) {
-      return res.render("books/new.ejs", { error: "All fields are required." })
+        if (!title || !description || !yearOfPublication || !genre) {
+            return res.render("books/new.ejs", { error: "All fields are required." })
+        }
+
+        const newBook = new Book({
+            title,
+            description,
+            yearOfPublication,
+            genre,
+            authorId: req.session.user._id,
+            BookImage: req.file?.path || null,
+            BookImagePublicId: req.file?.filename || null
+        })
+
+        await newBook.save()
+        res.redirect("/books")
+    } catch (error) {
+        console.log("Book creation error:", error)
+        res.render("books/new.ejs", { error: "Something went wrong. Please try again." })
     }
-
-    const newBook = new Book({
-      title,
-      description,
-      yearOfPublication,
-      genre,
-      authorId: req.session.user._id,
-      BookImage: req.file?.path || null,
-    })
-
-    await newBook.save()
-    res.redirect("/books")
-  } catch (error) {
-    console.log("Book creation error:", error)
-    res.render("books/new.ejs", { error: "Something went wrong. Please try again." })
-  }
 })
 
 router.get("/:id", async (req, res) => {
@@ -54,7 +57,7 @@ router.get("/:id", async (req, res) => {
             });
         }
 
-        // In booksRoutes.js GET /:id
+        // In booksRoutes.js → GET /:id
         let label = "Add to Shelf ▼";
         let btnClass = "btn-outline-secondary";
 
@@ -82,6 +85,32 @@ router.get("/:id", async (req, res) => {
         console.log(error);
     }
 })
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const book = await Book.findById(req.params.id);
+
+        if (!book) {
+            return res.redirect("/books");
+        }
+
+        // Optional: check if user is the author
+        if (req.session.user._id.toString() !== book.authorId.toString()) {
+            return res.status(403).send("Not allowed");
+        }
+
+        // Delete image from Cloudinary if exists
+        if (book.BookImagePublicId) {
+            await cloudinary.uploader.destroy(book.BookImagePublicId);
+        }
+
+        await Book.findByIdAndDelete(req.params.id);
+        res.redirect("/books");
+    } catch (err) {
+        console.log("Delete book error:", err);
+        res.redirect("/books");
+    }
+});
 
 
 module.exports = router
