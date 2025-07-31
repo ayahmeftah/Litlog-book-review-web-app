@@ -1,5 +1,27 @@
 const mongoose = require("mongoose")
 
+const bookListSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  bookId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Book',
+    required: true
+  },
+  status: {
+    type: String,
+    enum: ['want to read', 'reading', 'read'],
+    required: true
+  },
+  addedAt: {
+    type: Date,
+    default: Date.now
+  }
+})
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -23,7 +45,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['author', 'reader'],
         required: true
-    }
+    },
+    bookList: [bookListSchema]
 })
 
 module.exports = mongoose.model('User', userSchema)
