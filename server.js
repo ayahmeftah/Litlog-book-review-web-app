@@ -8,7 +8,6 @@ const connectToDB = require("./config/db")
 
 const authRoutes = require("./routes/authRoutes")
 const booksRoutes = require("./routes/booksRoutes")
-const bookListRoutes = require("./routes/booksListRoutes")
 
 // Middleware
 app.use(express.static('public'));
@@ -36,7 +35,6 @@ connectToDB()
 
 // Routes
 app.use("/books", booksRoutes)
-app.use("/booklist", bookListRoutes)
 app.use("/auth", authRoutes)
 
 

@@ -10,8 +10,8 @@ function requireAuthor(req, res, next) {
   if (req.session.user && req.session.user.role === "author") {
     next();
   } else {
-    res.send("Access denied. Authors only.");
+    res.send("Access denied. Authors only.")
   }
 }
 
-module.exports = { requireLogin, requireAuthor };
+module.exports = { requireLogin, requireAuthor }
