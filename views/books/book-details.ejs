@@ -99,6 +99,43 @@
             </div>
         </div>
 
+        
+        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form id="reviewForm" action="/books/<%= foundBook._id %>/reviews<%= userReview ? '/' + userReview._id + '?_method=put' : '' %>" method="POST" class="modal-content">
+                    <% if (userReview) { %>
+                        <input type="hidden" name="_method" value="PUT">
+                    <% } %>
+                    <div class="modal-header">
+                        <h5 class="modal-title"><%= userReview ? 'Edit Your Review' : 'Add a Review' %></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <label for="rating" class="form-label">Rating:</label>
+                        <select class="form-select mb-3" name="rating" required>
+                            <% for (let i=1; i <=5; i++) { %>
+                                <option value="<%= i %>" <%=userReview?.rating===i ? 'selected' : '' %>><%= i %> Star<%=i> 1 ? 's' : '' %></option>
+                            <% } %>
+                        </select>
+
+                        <label for="comment" class="form-label">Your Review:</label>
+                        <textarea class="form-control" name="comment" rows="4" required><%= userReview?.comment || '' %></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <%= userReview ? 'Update Review' : 'Submit Review' %>
+                        </button>
+                    </div>
+
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+
     <script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 

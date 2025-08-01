@@ -98,7 +98,7 @@ router.get("/:id", async (req, res) => {
 
 
     } catch (error) {
-        console.log("Get Book details error:",error)
+        console.log("Get Book details error:", error)
         res.redirect("/books")
     }
 })
@@ -116,7 +116,8 @@ router.delete('/:id', requireAuthor, async (req, res) => {
             await cloudinary.uploader.destroy(book.BookImagePublicId)
         }
 
-        await Book.findByIdAndDelete(req.params.id)
+        await Review.deleteMany({ bookId: book._id })
+        await Book.findByIdAndDelete(book._id)
 
         res.redirect("/books")
     } catch (error) {
@@ -235,20 +236,108 @@ router.post("/:id/shelf", requireLogin, async (req, res) => {
 
 // Get for viewing all the reviews of a certian book
 router.get("/:id/reviews", async (req, res) => {
-  try {
-    const bookId = req.params.id
-    const foundBook = await Book.findById(bookId)
-    const reviews = await Review.find({ bookId }).populate("userId").sort({ createdAt: -1 })
+    try {
+        const bookId = req.params.id
+        const foundBook = await Book.findById(bookId)
+        const reviews = await Review.find({ bookId }).populate("userId").sort({ createdAt: -1 })
 
-    res.render("reviews/all-reviews.ejs", { foundBook, reviews, user: req.session.user})
+        res.render("reviews/all-reviews.ejs", { foundBook, reviews, user: req.session.user })
 
-  } catch (error) {
-    console.log("Get all reviews for book error:", error)
-    res.redirect(`/books/${req.params.id}`)
-  }
+    } catch (error) {
+        console.log("Get all reviews for book error:", error)
+        res.redirect(`/books/${req.params.id}`)
+    }
 })
 
 
+router.post("/:id/reviews", requireLogin, async (req, res) => {
+    try {
+        const { rating, comment } = req.body
+        const bookId = req.params.id
+
+        const existingReview = await Review.findOne({ bookId, userId: req.session.user._id})
+
+        if (existingReview) {
+            return res.redirect(`/books/${bookId}`)
+        }
+
+        const newReview = new Review({
+            bookId,
+            userId: req.session.user._id,
+            rating,
+            comment
+        })
+
+        await newReview.save()
+
+        const reviews = await Review.find({ bookId })
+        let total = 0
+        for (let i = 0; i < reviews.length; i++) {
+            total += reviews[i].rating
+        }
+        const avg = reviews.length > 0 ? total / reviews.length : 0
+
+        res.redirect(`/books/${bookId}`)
+    } catch (error) {
+        console.log("Add review error:", error)
+        res.redirect(`/books/${req.params.id}`)
+    }
+})
+
+// PUT edit review
+router.put("/:id/reviews/:reviewId", requireLogin, async (req, res) => {
+    try {
+        const { rating, comment } = req.body
+        const review = await Review.findById(req.params.reviewId)
+
+        if (!review || review.userId.toString() !== req.session.user._id.toString()) {
+            return res.send("Not allowed")
+        }
+
+        review.rating = rating
+        review.comment = comment
+        await review.save()
+
+        const reviews = await Review.find({ bookId: req.params.id })
+        let total = 0
+        for (let i = 0; i < reviews.length; i++) {
+            total += reviews[i].rating
+        }
+        const avg = reviews.length > 0 ? total / reviews.length : 0
+
+        res.redirect(`/books/${req.params.id}`)
+    } catch (error) {
+        console.log("Edit review error:", error)
+        res.redirect(`/books/${req.params.id}`)
+    }
+})
+
+// DELETE review
+router.delete("/:id/reviews/:reviewId", requireLogin, async (req, res) => {
+    try {
+        const review = await Review.findById(req.params.reviewId)
+
+        if (!review || review.userId.toString() !== req.session.user._id.toString()) {
+            return res.send("Not allowed")
+        }
+
+        await Review.findByIdAndDelete(req.params.reviewId)
+
+        const reviews = await Review.find({ bookId: req.params.id })
+        let total = 0
+        for (let i = 0; i < reviews.length; i++) {
+            total += reviews[i].rating
+        }
+        const avg = reviews.length > 0 ? total / reviews.length : 0;
+
+        await Book.findByIdAndUpdate(req.params.id, { averageRating: avg })
+
+        res.redirect(`/books/${req.params.id}`)
+    } catch (error) {
+        console.log("Delete review error:", error)
+        res.redirect(`/books/${req.params.id}`)
+    }
+})
 
 
 module.exports = router
