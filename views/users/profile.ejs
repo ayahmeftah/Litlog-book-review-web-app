@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Document</title>
+</head>
+<body>
+<%- include("../partials/navbar") %>
+<div class="container mt-5">
+  <div class="text-center">
+    <img src="<%= user.profilePic %>" alt="Profile Picture" class="rounded-circle mb-3" width="150" height="150" />
+    <h3><%= user.name %></h3>
+    <p class="text-muted">@<%= user.username %></p>
+    
+    <a href="/users/profile/edit" class="btn btn-outline-primary mb-3">Edit Profile</a>
+    
+    <div class="d-grid gap-2 col-md-4 mx-auto">
+      <a href="/users/my-reviews" class="btn btn-primary">My Reviews</a>
+      <a href="/users/my-bookshelf" class="btn btn-secondary">Bookshelf (<%= totalBooks %>)</a>
+      <a href="/users/my-bookshelf/to-read" class="btn btn-outline-dark">Want to Read</a>
+      <a href="/users/my-bookshelf/reading" class="btn btn-outline-dark">Currently Reading</a>
+      <a href="/users/my-bookshelf/read" class="btn btn-outline-dark">Read</a>
+
+      <% if (user.role === "author") { %>
+        <a href="/users/my-books" class="btn btn-warning">My Books</a>
+      <% } %>
+
+      <form action="/users/delete-account" method="post">
+        <button type="submit" class="btn btn-danger">Delete Account</button>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

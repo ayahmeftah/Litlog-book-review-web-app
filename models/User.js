@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
     bookList: [bookListSchema],
     profilePic: { 
       type: String, 
-      default: "/images/default-profile.png" 
+      default: "/images/default-profile-img.jpg" 
     }
 })
 
