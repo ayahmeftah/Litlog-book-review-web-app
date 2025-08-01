@@ -193,7 +193,16 @@ router.post("/:id/shelf", requireLogin, async (req, res) => {
             if (existingIndex !== -1) {
                 user.bookList.splice(existingIndex, 1)
             }
-            
+
+            await Review.findOneAndDelete({ bookId, userId: req.session.user._id })
+            const remaining = await Review.find({ bookId })
+
+            let total = 0
+            for (let i = 0; i < remaining.length; i++) {
+                total += remaining[i].rating
+            }
+            const avg = remaining.length > 0 ? total / remaining.length : 0;
+            await Book.findByIdAndUpdate(bookId, { averageRating: avg })
 
         } else {
             if (existingIndex !== -1) {
@@ -202,6 +211,18 @@ router.post("/:id/shelf", requireLogin, async (req, res) => {
                 user.bookList.push({ bookId, userId: user._id, status })
             }
 
+            if (status === "want to read") {
+
+                await Review.findOneAndDelete({ bookId, userId: req.session.user._id })
+                const remaining = await Review.find({ bookId })
+
+                let total = 0
+                for (let i = 0; i < remaining.length; i++) {
+                    total += remaining[i].rating
+                }
+                const avg = remaining.length > 0 ? total / remaining.length : 0;
+                await Book.findByIdAndUpdate(bookId, { averageRating: avg })
+            }
         }
         await user.save()
         res.redirect(`/books/${bookId}`)
