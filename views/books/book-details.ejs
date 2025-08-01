@@ -150,7 +150,7 @@
         
         <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <form id="reviewForm" action="/books/<%= foundBook._id %>/reviews<%= userReview ? '/' + userReview._id + '?_method=put' : '' %>" method="POST" class="modal-content">
+                <form id="reviewForm" action="/books/<%= foundBook._id %>/reviews<%= userReview ? '/' + userReview._id + '?_method=put' : '' %>" method="post" class="modal-content">
                     <% if (userReview) { %>
                         <input type="hidden" name="_method" value="PUT">
                     <% } %>

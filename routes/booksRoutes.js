@@ -1,7 +1,7 @@
 const Book = require('../models/Book')
 const router = require('express').Router()
 const setupMulter = require("../middleware/multer")
-const upload = setupMulter()
+const uploadBookCover = setupMulter("book-covers")
 const { requireLogin, requireAuthor } = require("../middleware/authMiddleware")
 const cloudinary = require("../config/cloudinary")
 const User = require("../models/User")
@@ -24,7 +24,7 @@ router.get('/new', requireAuthor, async (req, res) => {
 })
 
 // Post to create book
-router.post("/", requireAuthor, upload.single("bookImage"), async (req, res) => {
+router.post("/", requireAuthor, uploadBookCover.single("bookImage"), async (req, res) => {
     try {
         const { title, description, yearOfPublication, genre } = req.body;
 
@@ -144,7 +144,7 @@ router.get("/:id/edit", requireAuthor, async (req, res) => {
 })
 
 // Put to save book details changes
-router.put("/:id", requireAuthor, upload.single("bookImage"), async (req, res) => {
+router.put("/:id", requireAuthor, uploadBookCover.single("bookImage"), async (req, res) => {
     try {
         const { title, description, yearOfPublication, genre } = req.body
         const foundBook = await Book.findById(req.params.id)

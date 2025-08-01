@@ -46,7 +46,11 @@ const userSchema = new mongoose.Schema({
         enum: ['author', 'reader'],
         required: true
     },
-    bookList: [bookListSchema]
+    bookList: [bookListSchema],
+    profilePic: { 
+      type: String, 
+      default: "/images/default-profile.png" 
+    }
 })
 
 module.exports = mongoose.model('User', userSchema)
