@@ -54,12 +54,22 @@ router.post("/", requireAuthor, upload.single("bookImage"), async (req, res) => 
 router.get("/:id", async (req, res) => {
     try {
         const foundBook = await Book.findById(req.params.id).populate("authorId")
+
+        const reviews = await Review.find({ bookId: foundBook._id }).populate("userId").limit(3)
+
         let userBookList = null
+        let userReview = null
+
         if (req.session.user) {
             const user = await User.findById(req.session.user._id);
             userBookList = user.bookList.find(
                 entry => entry.bookId.toString() === foundBook._id.toString()
             )
+
+            userReview = await Review.findOne({
+                bookId: foundBook._id,
+                userId: req.session.user._id,
+            })
         }
 
         let label = "Add to Shelf ▼"
@@ -81,12 +91,14 @@ router.get("/:id", async (req, res) => {
             userBookList,
             user: req.session.user,
             label,
-            btnClass
+            btnClass,
+            reviews,
+            userReview
         })
 
 
     } catch (error) {
-        console.log("Get Book details error:", error)
+        console.log("Get Book details error:",error)
         res.redirect("/books")
     }
 })
@@ -181,7 +193,7 @@ router.post("/:id/shelf", requireLogin, async (req, res) => {
             if (existingIndex !== -1) {
                 user.bookList.splice(existingIndex, 1)
             }
-
+            
 
         } else {
             if (existingIndex !== -1) {
@@ -198,6 +210,24 @@ router.post("/:id/shelf", requireLogin, async (req, res) => {
         res.redirect(`/books/${req.params.id}`)
     }
 })
+
+
+// Get for viewing all the reviews of a certian book
+router.get("/:id/reviews", async (req, res) => {
+  try {
+    const bookId = req.params.id
+    const foundBook = await Book.findById(bookId)
+    const reviews = await Review.find({ bookId }).populate("userId").sort({ createdAt: -1 })
+
+    res.render("reviews/all-reviews.ejs", { foundBook, reviews, user: req.session.user})
+
+  } catch (error) {
+    console.log("Get all reviews for book error:", error)
+    res.redirect(`/books/${req.params.id}`)
+  }
+})
+
+
 
 
 module.exports = router
