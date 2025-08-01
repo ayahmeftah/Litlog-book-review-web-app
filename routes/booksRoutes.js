@@ -87,7 +87,8 @@ router.get("/:id", async (req, res) => {
 
 
     } catch (error) {
-        console.log(error)
+        console.log("Get Book details error:",error)
+        res.redirect("/books")
     }
 })
 
@@ -127,7 +128,38 @@ router.get("/:id/edit", requireAuthor, async (req, res) => {
     }
 })
 
+// Put to save book details changes
+router.put("/:id", requireAuthor, upload.single("bookImage"), async (req, res) => {
+    try {
+        const { title, description, yearOfPublication, genre } = req.body
+        const foundBook = await Book.findById(req.params.id)
 
+        if (!foundBook){
+            return res.redirect("/books")
+        } 
+
+        if (req.file) {
+            if (foundBook.BookImagePublicId) {
+                await cloudinary.uploader.destroy(foundBook.BookImagePublicId);
+            }
+
+            foundBook.BookImage = req.file.path;
+            foundBook.BookImagePublicId = req.file.filename;
+        }
+
+        foundBook.title = title
+        foundBook.description = description
+        foundBook.yearOfPublication = yearOfPublication
+        foundBook.genre = genre
+
+        await foundBook.save()
+
+        res.redirect(`/books/${foundBook._id}`)
+    } catch (error) {
+        console.log("Update book error:", error)
+        res.redirect("/books")
+    }
+})
 
 
 module.exports = router
