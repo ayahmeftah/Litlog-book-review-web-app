@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Edit Book</title>
+</head>
+
+<body>
+    <%- include("../partials/navbar") %>
+    <h1>Edit Book</h1>
+
+    <% if (error) { %>
+        <p style="color: red;">
+            <%= error %>
+        </p>        
+    <% } %>
+
+    <form action="/books/<%= book._id %>?_method=put" method="post" enctype="multipart/form-data">
+        <label for="title">Title:</label><br>
+        <input type="text" name="title" id="title" value="<%= book.title %>"><br>
+
+        <label for="description">Description:</label><br>
+        <textarea name="description" id="description"><%= book.description %></textarea><br>
+
+        <label for="yearOfPublication">Year of Publication:</label><br>
+        <input type="number" name="yearOfPublication" id="yearOfPublication" value="<%= book.yearOfPublication %>"><br>
+
+        <label for="genre">Genre:</label><br>
+        <select name="genre" id="genre">
+            <option value="">Select Genre</option>
+            <% genres.forEach(oneGenre => { %>
+                <option value="<%= oneGenre %>" <%=book.genre === oneGenre ? "selected" : "" %>><%= oneGenre %><option>
+            <% }) %>
+        </select><br>
+
+        <label>Current Cover:</label><br>
+        <% if (book.BookImage) { %>
+        <img src="<%= book.BookImage %>" alt="Current Cover" style="height: 150px;"><br>
+        <% } %>
+
+        <label for="bookImage">Change Cover:</label><br>
+        <input type="file" name="bookImage" id="bookImage"><br><br>
+
+        <button type="submit">Update Book</button>
+    </form>
+
+</body>
+
+</html>

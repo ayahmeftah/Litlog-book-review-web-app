@@ -3,7 +3,6 @@ const router = require('express').Router()
 const setupMulter = require("../middleware/multer")
 const upload = setupMulter()
 const { requireLogin, requireAuthor } = require("../middleware/authMiddleware")
-const UserBookList = require("../models/UserBookList")
 const cloudinary = require("../config/cloudinary")
 const User = require("../models/User")
 const Review = require("../models/Review")
@@ -117,11 +116,14 @@ router.delete('/:id', requireAuthor, async (req, res) => {
 // Get to get the editing book view
 router.get("/:id/edit", requireAuthor, async (req, res) => {
     try {
+        
+        const genres =[ "Fantasy" , "Science Fiction" , "Mystery" , "Horror" , "Childerns" , "Romance", "Non-Fiction" , "Historical Fiction" , "Adventure" , "Young Adults" ]
+
         const book = await Book.findById(req.params.id)
 
         if (!book) return res.redirect("/books")
 
-        res.render("books/edit.ejs", { book, error: null })
+        res.render("books/edit.ejs", { book, error: null, genres })
     } catch (error) {
         console.log("Edit GET error:", error)
         res.redirect("/books")
