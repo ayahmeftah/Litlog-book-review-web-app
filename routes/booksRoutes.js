@@ -86,7 +86,7 @@ router.get("/:id", async (req, res) => {
 
 
     } catch (error) {
-        console.log("Get Book details error:",error)
+        console.log("Get Book details error:", error)
         res.redirect("/books")
     }
 })
@@ -116,8 +116,8 @@ router.delete('/:id', requireAuthor, async (req, res) => {
 // Get to get the editing book view
 router.get("/:id/edit", requireAuthor, async (req, res) => {
     try {
-        
-        const genres =[ "Fantasy" , "Science Fiction" , "Mystery" , "Horror" , "Childerns" , "Romance", "Non-Fiction" , "Historical Fiction" , "Adventure" , "Young Adults" ]
+
+        const genres = ["Fantasy", "Science Fiction", "Mystery", "Horror", "Childerns", "Romance", "Non-Fiction", "Historical Fiction", "Adventure", "Young Adults"]
 
         const book = await Book.findById(req.params.id)
 
@@ -136,9 +136,9 @@ router.put("/:id", requireAuthor, upload.single("bookImage"), async (req, res) =
         const { title, description, yearOfPublication, genre } = req.body
         const foundBook = await Book.findById(req.params.id)
 
-        if (!foundBook){
+        if (!foundBook) {
             return res.redirect("/books")
-        } 
+        }
 
         if (req.file) {
             if (foundBook.BookImagePublicId) {
@@ -160,6 +160,42 @@ router.put("/:id", requireAuthor, upload.single("bookImage"), async (req, res) =
     } catch (error) {
         console.log("Update book error:", error)
         res.redirect("/books")
+    }
+})
+
+router.post("/:id/shelf", requireLogin, async (req, res) => {
+    try {
+        const { status } = req.body
+        const bookId = req.params.id
+        const user = await User.findById(req.session.user._id)
+
+        if (!user) {
+            return res.redirect("/login")
+        }
+
+        const existingIndex = user.bookList.findIndex(
+            entry => entry.bookId.toString() === bookId.toString()
+        )
+
+        if (status === "remove") {
+            if (existingIndex !== -1) {
+                user.bookList.splice(existingIndex, 1)
+            }
+
+
+        } else {
+            if (existingIndex !== -1) {
+                user.bookList[existingIndex].status = status
+            } else {
+                user.bookList.push({ bookId, userId: user._id, status })
+            }
+
+        }
+        await user.save()
+        res.redirect(`/books/${bookId}`)
+    } catch (error) {
+        console.error("Shelf update error:", error)
+        res.redirect(`/books/${req.params.id}`)
     }
 })
 
