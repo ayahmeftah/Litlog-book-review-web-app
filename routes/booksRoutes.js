@@ -6,6 +6,7 @@ const { requireLogin, requireAuthor } = require("../middleware/authMiddleware")
 const UserBookList = require("../models/UserBookList")
 const cloudinary = require("../config/cloudinary")
 const User = require("../models/User")
+const Review = require("../models/Review")
 
 // Get all books
 router.get('/', async (req, res) => {
@@ -111,6 +112,22 @@ router.delete('/:id', requireAuthor, async (req, res) => {
         res.redirect("/books")
     }
 })
+
+// Get to get the editing book view
+router.get("/:id/edit", requireAuthor, async (req, res) => {
+    try {
+        const book = await Book.findById(req.params.id)
+
+        if (!book) return res.redirect("/books")
+
+        res.render("books/edit.ejs", { book, error: null })
+    } catch (error) {
+        console.log("Edit GET error:", error)
+        res.redirect("/books")
+    }
+})
+
+
 
 
 module.exports = router

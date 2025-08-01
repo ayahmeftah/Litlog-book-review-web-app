@@ -17,7 +17,8 @@
 
                 <div class="col-md-4 d-flex flex-column align-items-center">
                     <img src="<%= foundBook.BookImage %>" alt="Book Cover" class="book-image-details mb-3" />
-
+                    
+                    <!-- buttons under the book cover image -->
                     <% if (user && user._id.toString()===foundBook.authorId._id.toString()) { %>
                         <div class="w-75 d-flex flex-column align-items-center">
                             <form action="/books/<%= foundBook._id %>/edit" method="get" class="w-100 delete-edit-btn">
@@ -27,19 +28,22 @@
                                 <button class="btn btn-danger py-3 w-100">Delete</button>
                             </form>
                         </div>
-                        <% } else if (user) { %>
+                    <% } else if (user) { %>
 
                             <button class="btn <%= btnClass %> shelf-btn w-75 py-3" data-bs-toggle="modal" data-bs-target="#shelfModal">
                             <%= label %>
                             </button>
-                        <% } %>
+                    <% } %>
 
                 </div>
+
+                <!-- book details -->
                 <div class="col-md-8 book-info">
                     <h2>
                         <%= foundBook.title %>
                     </h2>
-                    <p><strong>Author:</strong>
+                    <p>
+                        <strong>Author:</strong>
                         <%= foundBook.authorId.name || foundBook.authorId.username %>
                     </p>
                     <p><strong>Average Rating:</strong>
@@ -47,23 +51,27 @@
                             <span class="rating-badge">
                                 <%= foundBook.averageRating.toFixed(1) %> / 5
                             </span>
-                            <% } else { %>
+                        <% } else { %>
                                 <span class="text-muted">Not rated yet</span>
-                            <% } %>
+                        <% } %>
                     </p>
-                    <p><strong>Year Published:</strong>
+                    <p>
+                        <strong>Year Published:</strong>
                         <%= foundBook.yearOfPublication %>
                     </p>
-                    <p><strong>Genre:</strong>
+                    <p>
+                        <strong>Genre:</strong>
                         <%= foundBook.genre %>
                     </p>
-                    <p><strong>Description:</strong>
+                    <p>
+                        <strong>Description:</strong>
                         <%= foundBook.description %>
                     </p>
                 </div>
             </div>
         </div>
 
+        <!-- books list pop up -->
         <div class="modal fade" id="shelfModal" tabindex="-1" aria-labelledby="shelfModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <form action="/booklist" method="POST" class="modal-content">
