@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Reviews - <%= foundBook.title %></title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include("../partials/navbar") %>
+
+  <div class="container mt-4">
+    <h2>All Reviews for "<%= foundBook.title %>"</h2>
+
+    <div class="mt-4">
+      <a href="/books/<%= foundBook._id %>" class="btn btn-outline-primary">← Back to Book</a>
+    </div>
+
+    <% if (reviews.length === 0) { %>
+      <p class="text-muted mt-4">No reviews yet for this book.</p>
+    <% } else { %>
+      <% reviews.forEach(review => { %>
+        <div class="review-box">
+          <div class="d-flex justify-content-between">
+            <div>
+              <strong><%= review.userId.name || review.userId.username %></strong>
+              <div>
+                <% for (let i = 1; i <= 5; i++) { %>
+                  <span class="star"><%= i <= review.rating ? '★' : '☆' %></span>
+                <% } %>
+              </div>
+            </div>
+            <small class="text-muted"><%= new Date(review.createdAt).toLocaleDateString() %></small>
+          </div>
+          <p class="mt-2"><%= review.comment %></p>
+        </div>
+      <% }) %>
+    <% } %>
+
+  </div>
+
+  <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

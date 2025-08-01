@@ -241,7 +241,7 @@ router.get("/:id/reviews", async (req, res) => {
         const foundBook = await Book.findById(bookId)
         const reviews = await Review.find({ bookId }).populate("userId").sort({ createdAt: -1 })
 
-        res.render("reviews/all-reviews.ejs", { foundBook, reviews, user: req.session.user })
+        res.render("books/all-reviews.ejs", { foundBook, reviews, user: req.session.user })
 
     } catch (error) {
         console.log("Get all reviews for book error:", error)
@@ -276,6 +276,8 @@ router.post("/:id/reviews", requireLogin, async (req, res) => {
             total += reviews[i].rating
         }
         const avg = reviews.length > 0 ? total / reviews.length : 0
+
+        await Book.findByIdAndUpdate(bookId, { averageRating: avg })
 
         res.redirect(`/books/${bookId}`)
     } catch (error) {

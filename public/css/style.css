@@ -89,22 +89,37 @@ nav {
 }
 
 .modal-content {
-  border-radius: 20px;
-}
-.modal-body .btn {
-  border-radius: 40px;
-  font-size: 1.1rem;
+    border-radius: 20px;
 }
 
-.shelf-btn, .delete-edit-btn {
-  font-size: 1.2rem;
-  font-weight: 500;
-  border-radius: 50px;
-  margin-top: 10px;
-  margin-left: 5px;
-  transition: all 0.2s ease-in-out;
+.modal-body .btn {
+    border-radius: 40px;
+    font-size: 1.1rem;
+}
+
+.shelf-btn,
+.delete-edit-btn {
+    font-size: 1.2rem;
+    font-weight: 500;
+    border-radius: 50px;
+    margin-top: 10px;
+    margin-left: 5px;
+    transition: all 0.2s ease-in-out;
 }
 
 .shelf-btn:hover {
-  transform: scale(1.02);
+    transform: scale(1.02);
+}
+
+.review-box {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.star {
+    color: #ffc107;
+    font-size: 1.1rem;
 }
