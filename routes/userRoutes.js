@@ -150,6 +150,13 @@ router.get("/my-bookshelves", requireLogin, async (req, res) => {
   res.render("users/bookshelves.ejs", {user,books: user.bookList})
 })
 
+router.get("/my-bookshelves/:status", requireLogin, async (req, res) => {
+  const status = req.params.status
+  const user = await User.findById(req.session.user._id).populate("bookList.bookId")
 
+  const filtered = user.bookList.filter(b => b.status === status)
+
+  res.render("users/bookshelf-filter.ejs", {user, books: filtered, status})
+})
 
 module.exports = router
