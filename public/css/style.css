@@ -130,3 +130,10 @@ nav {
     margin-top: 2px;
     margin-bottom: 6px;
 }
+
+.book-img-card {
+    width:120px; 
+    height:210px; 
+    object-fit:cover; 
+    margin-right: 1rem;
+}

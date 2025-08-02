@@ -1,5 +1,6 @@
 const User = require("../models/User")
 const Review = require("../models/Review")
+const Book = require("../models/Book")
 const router = require("express").Router()
 const { requireLogin, requireAuthor } = require("../middleware/authMiddleware")
 const setupMulter = require("../middleware/multer")
@@ -141,6 +142,12 @@ router.get("/my-reviews", requireLogin, async (req, res) => {
   const userReviews = await Review.find({ userId: req.session.user._id }).populate("bookId").sort({ createdAt: -1 })
   const user = req.session.user.username
   res.render("users/my-reviews.ejs", { userReviews , user})
+})
+
+router.get("/my-bookshelves", requireLogin, async (req, res) => {
+  const user = await User.findById(req.session.user._id).populate({path: "bookList.bookId", populate: { path: "authorId" }})
+  
+  res.render("users/bookshelves.ejs", {user,books: user.bookList})
 })
 
 

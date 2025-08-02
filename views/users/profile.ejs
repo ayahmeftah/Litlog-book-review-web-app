@@ -19,10 +19,10 @@
     
     <div class="d-grid gap-2 col-md-4 mx-auto">
       <a href="/users/my-reviews" class="btn btn-primary">My Reviews</a>
-      <a href="/users/my-bookshelf" class="btn btn-secondary">Bookshelf (<%= totalBooks %>)</a>
-      <a href="/users/my-bookshelf/to-read" class="btn btn-outline-dark">Want to Read</a>
-      <a href="/users/my-bookshelf/reading" class="btn btn-outline-dark">Currently Reading</a>
-      <a href="/users/my-bookshelf/read" class="btn btn-outline-dark">Read</a>
+      <a href="/users/my-bookshelves" class="btn btn-secondary">Bookshelf (<%= totalBooks %>)</a>
+      <a href="/users/my-bookshelves/to-read" class="btn btn-outline-dark">Want to Read</a>
+      <a href="/users/my-bookshelves/reading" class="btn btn-outline-dark">Currently Reading</a>
+      <a href="/users/my-bookshelves/read" class="btn btn-outline-dark">Read</a>
 
       <% if (user.role === "author") { %>
         <a href="/users/my-books" class="btn btn-warning">My Books</a>
