@@ -139,28 +139,49 @@ router.put("/profile/edit", requireLogin, uploadProfilePic.single("profilePic"),
 
 router.get("/my-reviews", requireLogin, async (req, res) => {
 
-    const userReviews = await Review.find({ userId: req.session.user._id }).populate("bookId").sort({ createdAt: -1 })
+    try {
+        const userReviews = await Review.find({ userId: req.session.user._id }).populate("bookId").sort({ createdAt: -1 })
     const user = req.session.user.username
     res.render("users/my-reviews.ejs", { userReviews, user })
+    } catch (error) {
+        console.log("Get user reviews error:", error)
+        res.render("users/profile.ejs")
+    }
+    
 })
 
 router.get("/my-bookshelves", requireLogin, async (req, res) => {
-    const user = await User.findById(req.session.user._id).populate({ path: "bookList.bookId", populate: { path: "authorId" } })
+    try {
+        const user = await User.findById(req.session.user._id).populate({ path: "bookList.bookId", populate: { path: "authorId" } })
 
     res.render("users/bookshelves.ejs", { user, books: user.bookList })
+    } catch (error) {
+        console.log("Get user bookshelves error:", error)
+        res.render("users/profile.ejs")
+    }
+    
 })
 
 router.get("/my-bookshelves/:status", requireLogin, async (req, res) => {
-    const status = req.params.status
+
+    try {
+        const status = req.params.status
     const user = await User.findById(req.session.user._id).populate({ path: "bookList.bookId", populate: { path: "authorId" } })
 
     const filtered = user.bookList.filter(b => b.status === status)
 
     res.render("users/bookshelf-filter.ejs", { user, books: filtered, status })
+    } catch (error) {
+        console.log("Get user filtered bookshelves error:", error)
+        res.render("users/profile.ejs")
+    }
+    
 })
 
 router.get("/my-books", requireLogin, async (req, res) => {
-    const user = await User.findById(req.session.user._id)
+
+    try {
+        const user = await User.findById(req.session.user._id)
 
     if (user.role !== "author") {
         return res.redirect("/users/profile")
@@ -169,6 +190,11 @@ router.get("/my-books", requireLogin, async (req, res) => {
     const books = await Book.find({ authorId: user._id })
 
     res.render("users/my-books.ejs", { books })
+    } catch (error) {
+        console.log("Get author books error:", error)
+        res.render("users/profile.ejs")
+    }
+    
 })
 
 router.delete("/delete-account", requireLogin, async (req, res) => {
@@ -210,7 +236,7 @@ router.delete("/delete-account", requireLogin, async (req, res) => {
         await Review.deleteMany({ userId: userId })
 
         const allUsersAgain = await User.find({})
-        
+
         for (const u of allUsersAgain) {
             u.bookList = u.bookList.filter(entry => {
                 entry.userId && entry.userId.toString() !== userId.toString()
