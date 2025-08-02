@@ -171,4 +171,65 @@ router.get("/my-books", requireLogin, async (req, res) => {
     res.render("users/my-books.ejs", { books })
 })
 
+router.delete("/delete-account", requireLogin, async (req, res) => {
+    try {
+
+        const userId = req.session.user._id
+        const user = await User.findById(userId)
+
+        if (!user) {
+            return res.redirect("/books")
+        }
+
+        if (user.profilePicPublicId) {
+            await cloudinary.uploader.destroy(user.profilePicPublicId)
+        }
+
+        const booksByUser = await Book.find({ authorId: userId })
+
+        for (const book of booksByUser) {
+
+            if (book.BookImagePublicId) {
+                await cloudinary.uploader.destroy(book.BookImagePublicId)
+            }
+
+            await Review.deleteMany({ bookId: book._id })
+
+            const allUsers = await User.find({})
+
+            for (const u of allUsers) {
+                u.bookList = u.bookList.filter(entry =>
+                    entry.bookId && entry.bookId.toString() !== book._id.toString()
+                )
+                await u.save()
+            }
+        }
+
+        await Book.deleteMany({ authorId: userId })
+
+        await Review.deleteMany({ userId: userId })
+
+        const allUsersAgain = await User.find({})
+        
+        for (const u of allUsersAgain) {
+            u.bookList = u.bookList.filter(entry => {
+                entry.userId && entry.userId.toString() !== userId.toString()
+
+            })
+            await u.save()
+        }
+
+        await User.findByIdAndDelete(userId)
+
+        req.session.destroy(() => {
+            res.redirect("/books")
+        })
+
+    } catch (error) {
+        console.error("Error deleting user account:", error)
+        res.redirect("/users/profile")
+    }
+})
+
+
 module.exports = router
