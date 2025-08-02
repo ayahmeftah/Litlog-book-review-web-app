@@ -117,6 +117,18 @@ router.delete('/:id', requireAuthor, async (req, res) => {
         }
 
         await Review.deleteMany({ bookId: book._id })
+
+        const users = await User.find({ "bookList.bookId": book._id })
+
+        for (let user of users) {
+
+            user.bookList = user.bookList.filter(entry => {
+                return entry.bookId.toString() !== book._id.toString()
+            })
+
+            await user.save()
+        }
+
         await Book.findByIdAndDelete(book._id)
 
         res.redirect("/books")
