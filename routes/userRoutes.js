@@ -152,7 +152,7 @@ router.get("/my-bookshelves", requireLogin, async (req, res) => {
 
 router.get("/my-bookshelves/:status", requireLogin, async (req, res) => {
     const status = req.params.status
-    const user = await User.findById(req.session.user._id).populate("bookList.bookId")
+    const user = await User.findById(req.session.user._id).populate({ path: "bookList.bookId", populate: { path: "authorId" } })
 
     const filtered = user.bookList.filter(b => b.status === status)
 
