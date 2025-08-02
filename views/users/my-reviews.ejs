@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Reviews</title>
+</head>
+<body>
+<%- include("../partials/navbar") %>
+
+<div class="container mt-5">
+  <h3><%= user %> Reviews</h3>
+
+  <% if (userReviews.length === 0) { %>
+    <p class="text-muted">You haven't submitted any reviews yet.</p>
+  <% } else { %>
+    <% userReviews.forEach(review => { %>
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5><%= review.bookId.title %></h5>
+          <p>
+            <% for (let i = 1; i <= 5; i++) { %>
+              <span class="star"><%= i <= review.rating ? '★' : '☆' %></span>
+            <% } %>
+          </p>
+          <p><%= review.comment %></p>
+          <a href="/books/<%= review.bookId._id %>" class="btn btn-outline-primary">View Book</a>
+        </div>
+      </div>
+    <% }) %>
+  <% } %>
+</div>
+
+</body>
+</html>

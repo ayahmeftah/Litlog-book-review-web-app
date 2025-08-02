@@ -1,4 +1,5 @@
 const User = require("../models/User")
+const Review = require("../models/Review")
 const router = require("express").Router()
 const { requireLogin, requireAuthor } = require("../middleware/authMiddleware")
 const setupMulter = require("../middleware/multer")
@@ -128,12 +129,20 @@ router.put("/profile/edit", requireLogin, uploadProfilePic.single("profilePic"),
 
         await user.save()
         res.redirect("/users/profile")
-        
+
     } catch (error) {
         console.log("Edit profile error:", error)
         res.redirect("/users/profile")
     }
 })
+
+router.get("/my-reviews", requireLogin, async (req, res) => {
+
+  const userReviews = await Review.find({ userId: req.session.user._id }).populate("bookId").sort({ createdAt: -1 })
+  const user = req.session.user.username
+  res.render("users/my-reviews.ejs", { userReviews , user})
+})
+
 
 
 module.exports = router
