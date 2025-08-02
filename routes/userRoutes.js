@@ -34,11 +34,11 @@ router.put("/profile/edit", requireLogin, uploadProfilePic.single("profilePic"),
         const errorMessages = {}
         const passwordErrors = []
 
-        if (!name) { 
-            errorMessages.name = "Name is required." 
+        if (!name) {
+            errorMessages.name = "Name is required."
         }
-        if (!username) { 
-            errorMessages.username = "Username is required." 
+        if (!username) {
+            errorMessages.username = "Username is required."
         }
         if (!email) {
             errorMessages.email = "Email is required."
@@ -94,7 +94,7 @@ router.put("/profile/edit", requireLogin, uploadProfilePic.single("profilePic"),
             }
         }
 
-        if (errorMessages.name || errorMessages.username || errorMessages.email || errorMessages.currentPassword ||passwordErrors.length > 0) {
+        if (errorMessages.name || errorMessages.username || errorMessages.email || errorMessages.currentPassword || passwordErrors.length > 0) {
 
             return res.render("users/edit-profile.ejs", { user, errorMessages, passwordErrors })
         }
@@ -139,24 +139,36 @@ router.put("/profile/edit", requireLogin, uploadProfilePic.single("profilePic"),
 
 router.get("/my-reviews", requireLogin, async (req, res) => {
 
-  const userReviews = await Review.find({ userId: req.session.user._id }).populate("bookId").sort({ createdAt: -1 })
-  const user = req.session.user.username
-  res.render("users/my-reviews.ejs", { userReviews , user})
+    const userReviews = await Review.find({ userId: req.session.user._id }).populate("bookId").sort({ createdAt: -1 })
+    const user = req.session.user.username
+    res.render("users/my-reviews.ejs", { userReviews, user })
 })
 
 router.get("/my-bookshelves", requireLogin, async (req, res) => {
-  const user = await User.findById(req.session.user._id).populate({path: "bookList.bookId", populate: { path: "authorId" }})
-  
-  res.render("users/bookshelves.ejs", {user,books: user.bookList})
+    const user = await User.findById(req.session.user._id).populate({ path: "bookList.bookId", populate: { path: "authorId" } })
+
+    res.render("users/bookshelves.ejs", { user, books: user.bookList })
 })
 
 router.get("/my-bookshelves/:status", requireLogin, async (req, res) => {
-  const status = req.params.status
-  const user = await User.findById(req.session.user._id).populate("bookList.bookId")
+    const status = req.params.status
+    const user = await User.findById(req.session.user._id).populate("bookList.bookId")
 
-  const filtered = user.bookList.filter(b => b.status === status)
+    const filtered = user.bookList.filter(b => b.status === status)
 
-  res.render("users/bookshelf-filter.ejs", {user, books: filtered, status})
+    res.render("users/bookshelf-filter.ejs", { user, books: filtered, status })
+})
+
+router.get("/my-books", requireLogin, async (req, res) => {
+    const user = await User.findById(req.session.user._id)
+
+    if (user.role !== "author") {
+        return res.redirect("/users/profile")
+    }
+
+    const books = await Book.find({ authorId: user._id })
+
+    res.render("users/my-books.ejs", { books })
 })
 
 module.exports = router
