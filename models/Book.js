@@ -20,7 +20,6 @@ const bookSchema = new mongoose.Schema({
             "Science Fiction",
             "Mystery",
             "Horror",
-            "Childerns",
             "Romance",
             "Non-Fiction",
             "Historical Fiction",
