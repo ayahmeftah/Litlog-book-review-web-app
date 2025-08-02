@@ -255,7 +255,7 @@ router.post("/:id/reviews", requireLogin, async (req, res) => {
         const { rating, comment } = req.body
         const bookId = req.params.id
 
-        const existingReview = await Review.findOne({ bookId, userId: req.session.user._id})
+        const existingReview = await Review.findOne({ bookId, userId: req.session.user._id })
 
         if (existingReview) {
             return res.redirect(`/books/${bookId}`)

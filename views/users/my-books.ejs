@@ -25,7 +25,7 @@
           <div>
             <h5 class="mb-1"><%= book.title %></h5>
             <p class="mb-1"><strong>Genre:</strong> <%= book.genre %></p>
-            <p class="mb-1"><strong>Rating:</strong> <%= book.averageRating + " / 5" : "N/A" %></p>
+            <p class="mb-1"><strong>Rating:</strong> <%= book.averageRating ? (book.averageRating.toFixed(1) + ' / 5') : "N/A" %></p>
             <p class="mb-2"><strong>Year:</strong> <%= book.yearOfPublication || 'Unknown' %></p>
             <a href="/books/<%= book._id %>" class="btn btn-sm btn-primary">View Book</a>
           </div>
