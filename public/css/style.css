@@ -123,3 +123,10 @@ nav {
     color: #ffc107;
     font-size: 1.1rem;
 }
+
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 2px;
+    margin-bottom: 6px;
+}

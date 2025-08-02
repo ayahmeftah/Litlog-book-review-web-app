@@ -50,6 +50,10 @@ const userSchema = new mongoose.Schema({
     profilePic: { 
       type: String, 
       default: "/images/default-profile-img.jpg" 
+    },
+    profilePicPublicId: {
+      type: String,
+      default: null
     }
 })
 
