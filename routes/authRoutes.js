@@ -1,12 +1,16 @@
 const User = require("../models/User")
 const router = require("express").Router()
 const bcrypt = require("bcrypt")
+const setupMulter = require("../middleware/multer")
+const uploadProfilePic = setupMulter("profile-pictures")
+const cloudinary = require("../config/cloudinary")
 
-router.get('/sign-up', async (req,res)=>{
-    res.render("auth/sign-up.ejs",{ errorMessages: null, passwordErrors: [] })
+
+router.get('/sign-up', async (req, res) => {
+  res.render("auth/sign-up.ejs", { errorMessages: null, passwordErrors: [] })
 })
 
-router.post("/sign-up", async (req, res) => {
+router.post("/sign-up", uploadProfilePic.single("profilePic"), async (req, res) => {
   try {
     const { name, username, email, password, role } = req.body
 
@@ -19,7 +23,7 @@ router.post("/sign-up", async (req, res) => {
     if (!password) passwordErrors.push("Password is required.")
     if (!role) errorMessages.role = "Role is required."
 
-    
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (email && !emailRegex.test(email)) {
       errorMessages.email = "Please enter a valid email."
@@ -68,16 +72,17 @@ router.post("/sign-up", async (req, res) => {
       }
     }
 
-    
+
     if (errorMessages.name || errorMessages.username || errorMessages.email || errorMessages.role || passwordErrors.length > 0) {
-     return res.render("auth/sign-up.ejs", {
+      return res.render("auth/sign-up.ejs", {
         errorMessages,
         passwordErrors
       })
     }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
-    await User.create({
+
+    let newUser = new User({
       name,
       username,
       email,
@@ -85,6 +90,21 @@ router.post("/sign-up", async (req, res) => {
       password: hashedPassword
     })
 
+    if (req.file) {
+      newUser.profilePic = req.file.path
+      newUser.profilePicPublicId = req.file.filename
+    }
+
+    await newUser.save()
+
+    req.session.user = {
+      _id: newUser._id,
+      name: newUser.name,
+      username: newUser.username,
+      email: newUser.email,
+      role: newUser.role
+    }
+    
     return res.redirect("/books");
 
   } catch (error) {
@@ -98,7 +118,7 @@ router.post("/sign-up", async (req, res) => {
 
 
 router.get("/login", (req, res) => {
-  res.render("auth/login.ejs",{errorMessages: null})
+  res.render("auth/login.ejs", { errorMessages: null })
 })
 
 router.post("/login", async (req, res) => {
@@ -145,8 +165,8 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-    req.session.destroy()
-    res.redirect("/auth/login")
+  req.session.destroy()
+  res.redirect("/auth/login")
 })
 
 module.exports = router

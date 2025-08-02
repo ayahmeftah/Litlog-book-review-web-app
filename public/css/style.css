@@ -137,3 +137,9 @@ nav {
     object-fit:cover; 
     margin-right: 1rem;
 }
+
+.profile-big-img{
+    width: 150px; 
+    height: 150px; 
+    object-fit: cover;
+}
