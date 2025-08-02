@@ -1,5 +1,4 @@
 function init() {
-    console.log('reached')
     var titleInput = document.querySelector("#titleInput")
     var authorInput = document.querySelector("#authorInput")
     var genreSelect = document.querySelector("#genreSelect")
@@ -8,7 +7,7 @@ function init() {
 
 
     function filterBooks() {
-        
+
         var title = titleInput.value.trim().toLowerCase()
         var author = authorInput.value.trim().toLowerCase()
         var genre = genreSelect.value.trim().toLowerCase()
