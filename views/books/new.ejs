@@ -9,41 +9,60 @@
 </head>
 <body>
   <%- include("../partials/navbar") %>
-  <h1>Add a New Book</h1>
+  <div class="container mt-5">
+  <div class="signup-container">
+    <h2 class="text-center mb-4">Add a New Book</h2>
 
-  <% if (error) { %>
-    <p style="color: red;"><%= error %></p>
-  <% } %>
+    <% if (error) { %>
+      <div class="alert alert-danger text-center"><%= error %></div>
+    <% } %>
 
-  <form action="/books" method="POST" enctype="multipart/form-data">
-    <label for="title">Title:</label><br>
-    <input type="text" name="title" id="title"><br>
+    <form action="/books" method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title:</label>
+        <input type="text" name="title" id="title" class="form-control">
+      </div>
 
-    <label for="description">Description:</label><br>
-    <textarea name="description" id="description"></textarea><br>
+      <div class="mb-3">
+        <label for="bookImage" class="form-label">Book Cover:</label>
+        <input type="file" name="bookImage" id="bookImage" class="form-control">
+      </div>
 
-    <label for="yearOfPublication">Year of Publication:</label><br>
-    <input type="number" name="yearOfPublication" id="yearOfPublication"><br>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="genre" class="form-label">Genre:</label>
+          <select name="genre" id="genre" class="form-select">
+            <option value="">Select Genre</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Science Fiction">Science Fiction</option>
+            <option value="Mystery">Mystery</option>
+            <option value="Horror">Horror</option>
+            <option value="Romance">Romance</option>
+            <option value="Non-Fiction">Non-Fiction</option>
+            <option value="Historical Fiction">Historical Fiction</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Young Adults">Young Adults</option>
+          </select>
+        </div>
 
-    <label for="genre">Genre:</label><br>
-    <select name="genre" id="genre">
-      <option value="">Select Genre</option>
-      <option value="Fantasy">Fantasy</option>
-      <option value="Science Fiction">Science Fiction</option>
-      <option value="Mystery">Mystery</option>
-      <option value="Horror">Horror</option>
-      <option value="Romance">Romance</option>
-      <option value="Non-Fiction">Non-Fiction</option>
-      <option value="Historical Fiction">Historical Fiction</option>
-      <option value="Adventure">Adventure</option>
-      <option value="Young Adults">Young Adults</option>
-    </select><br>
+        <div class="col-md-6">
+          <label for="yearOfPublication" class="form-label">Year of Publication:</label>
+          <input type="number" name="yearOfPublication" id="yearOfPublication" class="form-control">
+        </div>
+      </div>
 
-    <label for="bookImage">Book Cover:</label><br>
-    <input type="file" name="bookImage" id="bookImage"><br><br>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description:</label>
+        <textarea name="description" id="description" rows="4" class="form-control"></textarea>
+      </div>
 
-    <button type="submit">Add Book</button>
-  </form>
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary me-2">Add Book</button>
+        <a href="/books" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
   
 </body>
 </html>
