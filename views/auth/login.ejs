@@ -26,8 +26,8 @@
             <div class="mb-3">
               <label for="password" class="form-label">Password:</label>
               <div class="input-group">
-                <input type="password" name="password" id="password" class="form-control">
-                <button type="button" id="show-password" class="btn btn-outline-secondary">Show</button>
+                <input type="password" name="password" id="password" class="form-control password">
+                <button type="button" id="show-password" class="btn btn-outline-secondary show-password">Show</button>
               </div>
               <% if (errorMessages?.password) { %>
                 <div class="text-danger small"><%= errorMessages.password %></div>
