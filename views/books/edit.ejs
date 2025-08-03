@@ -21,25 +21,25 @@
 
     <form action="/books/<%= book._id %>?_method=put" method="post" enctype="multipart/form-data">
         <label for="title">Title:</label><br>
-        <input type="text" name="title" id="title" value="<%= foundBook.title %>"><br>
+        <input type="text" name="title" id="title" value="<%= book.title %>"><br>
 
         <label for="description">Description:</label><br>
-        <textarea name="description" id="description"><%= foundBook.description %></textarea><br>
+        <textarea name="description" id="description"><%= book.description %></textarea><br>
 
         <label for="yearOfPublication">Year of Publication:</label><br>
-        <input type="number" name="yearOfPublication" id="yearOfPublication" value="<%= foundBook.yearOfPublication %>"><br>
+        <input type="number" name="yearOfPublication" id="yearOfPublication" value="<%= book.yearOfPublication %>"><br>
 
         <label for="genre">Genre:</label><br>
         <select name="genre" id="genre">
             <option value="">Select Genre</option>
             <% genres.forEach(oneGenre => { %>
-                <option value="<%= oneGenre %>" <%=foundBook.genre === oneGenre ? "selected" : "" %>><%= oneGenre %><option>
+                <option value="<%= oneGenre %>" <%=book.genre === oneGenre ? "selected" : "" %>><%= oneGenre %><option>
             <% }) %>
         </select><br>
 
         <label>Current Cover:</label><br>
-        <% if (foundBook.BookImage) { %>
-        <img src="<%= foundBook.BookImage %>" alt="Current Cover" style="height: 150px;"><br>
+        <% if (book.BookImage) { %>
+        <img src="<%= book.BookImage %>" alt="Current Cover" style="height: 150px;"><br>
         <% } %>
 
         <label for="bookImage">Change Cover:</label><br>

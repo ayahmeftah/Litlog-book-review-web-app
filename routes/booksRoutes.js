@@ -18,6 +18,75 @@ router.get('/', async (req, res) => {
     }
 })
 
+// router.get("/", requireLogin, async (req, res) => {
+//   try {
+//     const user = await User.findById(req.session.user._id).populate("bookList.book");
+//     const allBooks = await Book.find().populate("authorId");
+
+//     // 1. Extract genre/author preferences and status from bookList
+//     let preferredGenres = [];
+//     let preferredAuthors = [];
+//     let readOrReadingIds = [];
+//     let wantToReadIds = [];
+
+//     user.bookList.forEach(item => {
+//       const book = item.book;
+
+//       if (item.status === "read" || item.status === "reading") {
+//         readOrReadingIds.push(book._id.toString());
+//       }
+
+//       if (item.status === "want to read") {
+//         wantToReadIds.push(book._id.toString());
+//       }
+
+//       if (!preferredGenres.includes(book.genre)) {
+//         preferredGenres.push(book.genre);
+//       }
+
+//       const authorIdStr = book.authorId._id.toString();
+//       if (!preferredAuthors.includes(authorIdStr)) {
+//         preferredAuthors.push(authorIdStr);
+//       }
+//     });
+
+//     // 2. Categorize books based on preferences and reading status
+//     let recommended = [];
+//     let queued = [];
+//     let others = [];
+
+//     allBooks.forEach(book => {
+//       const bookId = book._id.toString();
+//       const authorId = book.authorId._id.toString();
+
+//       const isPreferred =
+//         preferredGenres.includes(book.genre) ||
+//         preferredAuthors.includes(authorId);
+
+//       const isRead = readOrReadingIds.includes(bookId);
+//       const isQueued = wantToReadIds.includes(bookId);
+
+//       if (isQueued) {
+//         queued.push(book);
+//       } else if (isPreferred && !isRead) {
+//         recommended.push(book);
+//       } else {
+//         others.push(book);
+//       }
+//     });
+
+//     // 3. Final order: recommended → queued → others
+//     const finalBooks = recommended.concat(queued).concat(others);
+
+//     res.render("books/all-books.ejs", { books: finalBooks });
+
+//   } catch (err) {
+//     console.error("Personalized browse error:", err);
+//     res.render("books/all-books.ejs", { books: [] });
+//   }
+// });
+
+
 // Get form to create new book
 router.get('/new', requireAuthor, async (req, res) => {
     res.render('books/new.ejs', { error: null })
