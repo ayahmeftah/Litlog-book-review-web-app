@@ -11,42 +11,62 @@
 
 <body>
     <%- include("../partials/navbar") %>
-    <h1>Edit Book</h1>
+    <div class="container mt-5">
+  <div class="signup-container">
+    <h2 class="text-center mb-4">Edit Book</h2>
 
     <% if (error) { %>
-        <p style="color: red;">
-            <%= error %>
-        </p>        
+      <div class="alert alert-danger text-center"><%= error %></div>
     <% } %>
 
     <form action="/books/<%= book._id %>?_method=put" method="post" enctype="multipart/form-data">
-        <label for="title">Title:</label><br>
-        <input type="text" name="title" id="title" value="<%= book.title %>"><br>
+      <div class="row">
+        <div class="col-md-4 text-center mb-4">
+          <label class="form-label">Current Cover:</label><br>
+          <% if (book.BookImage) { %>
+            <img src="<%= book.BookImage %>" alt="Current Cover" class="img-fluid rounded mb-3" style="max-height: 200px;"><br>
+          <% } else { %>
+            <p class="text-muted">No image uploaded.</p>
+          <% } %>
+          <label for="bookImage" class="form-label">Change Cover:</label>
+          <input type="file" name="bookImage" id="bookImage" class="form-control">
+        </div>
 
-        <label for="description">Description:</label><br>
-        <textarea name="description" id="description"><%= book.description %></textarea><br>
+        <div class="col-md-8">
+          <div class="mb-3">
+            <label for="title" class="form-label">Title:</label>
+            <input type="text" name="title" id="title" class="form-control" value="<%= book.title %>">
+          </div>
 
-        <label for="yearOfPublication">Year of Publication:</label><br>
-        <input type="number" name="yearOfPublication" id="yearOfPublication" value="<%= book.yearOfPublication %>"><br>
+          <div class="mb-3">
+            <label for="yearOfPublication" class="form-label">Year of Publication:</label>
+            <input type="number" name="yearOfPublication" id="yearOfPublication" class="form-control" value="<%= book.yearOfPublication %>">
+          </div>
 
-        <label for="genre">Genre:</label><br>
-        <select name="genre" id="genre">
-            <option value="">Select Genre</option>
-            <% genres.forEach(oneGenre => { %>
-                <option value="<%= oneGenre %>" <%=book.genre === oneGenre ? "selected" : "" %>><%= oneGenre %><option>
-            <% }) %>
-        </select><br>
+          <div class="mb-3">
+            <label for="genre" class="form-label">Genre:</label>
+            <select name="genre" id="genre" class="form-select">
+              <option value="">Select Genre</option>
+              <% genres.forEach(oneGenre => { %>
+                <option value="<%= oneGenre %>" <%=book.genre === oneGenre ? "selected" : "" %>><%= oneGenre %></option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+      </div>
 
-        <label>Current Cover:</label><br>
-        <% if (book.BookImage) { %>
-        <img src="<%= book.BookImage %>" alt="Current Cover" style="height: 150px;"><br>
-        <% } %>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description:</label>
+        <textarea name="description" id="description" rows="4" class="form-control"><%= book.description %></textarea>
+      </div>
 
-        <label for="bookImage">Change Cover:</label><br>
-        <input type="file" name="bookImage" id="bookImage"><br><br>
-
-        <button type="submit">Update Book</button>
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary me-2">Update Book</button>
+        <a href="/books" class="btn btn-secondary">Cancel</a>
+      </div>
     </form>
+  </div>
+</div>
 
 </body>
 
