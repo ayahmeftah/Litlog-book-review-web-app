@@ -30,7 +30,7 @@
             <p class="mb-1"><strong>Genre:</strong> <%= book.genre %></p>
             <p class="mb-1"><strong>Rating:</strong> <%= book.averageRating ? (book.averageRating.toFixed(1) + ' / 5') : "Not Rated Yet" %></p>
             <p class="mb-2"><strong>Year:</strong> <%= book.yearOfPublication || 'Unknown' %></p>
-            <a href="/books/<%= book._id %>" class="btn btn-sm btn-primary">View Book</a>
+            <a href="/books/<%= book._id %>" class="btn btn-sm btn-outline-primary">View Book</a>
           </div>
         </div>
       </div>

@@ -11,7 +11,10 @@
 <%- include("../partials/navbar") %>
 
 <div class="container mt-5">
-  <h3><%= status.charAt(0).toUpperCase() + status.slice(1) %> Books (<%= books.length %>)</h3>
+  <div class="mt-4">
+      <a href="/users/profile" class="btn btn-outline-secondary">← Back to Profile</a>
+  </div> <br>
+  <h3><%= status.charAt(0).toUpperCase() + status.slice(1) %> Books (<%= books.length %>)</h3> <br>
 
   <% if (books.length === 0) { %>
     <p class="text-muted">No books in this shelf.</p>
@@ -27,9 +30,9 @@
             <p class="mb-1 text-muted"><strong>Status:</strong> <%= entry.status %></p>
             <p class="mb-1"><strong>Author:</strong> <%= entry.bookId.authorId?.name || "Unknown" %></p>
             <p class="mb-1"><strong>Genre:</strong> <%= entry.bookId.genre %></p>
-            <p class="mb-1"><strong>Rating:</strong> <%= entry.bookId.averageRating ? (entry.bookId.averageRating.toFixed(1) + ' / 5') + " / 5" : "N/A" %></p>
+            <p class="mb-1"><strong>Rating:</strong> <%= entry.bookId.averageRating ? (entry.bookId.averageRating.toFixed(1) + ' / 5') : "Not Rated Yet" %></p>
             <p class="mb-2"><strong>Year:</strong> <%= entry.bookId.yearOfPublication || 'Unknown' %></p>
-            <a href="/books/<%= entry.bookId._id %>" class="btn btn-sm btn-primary">View Book</a>
+            <a href="/books/<%= entry.bookId._id %>" class="btn btn-sm btn-outline-primary">View Book</a>
           </div>
         </div>
       </div>
