@@ -107,7 +107,7 @@ nav {
     transition: all 0.2s ease-in-out;
 }
 
-.shelf-btn:hover {
+.shelf-btn:hover, .delete-edit-btn:hover {
     transform: scale(1.02);
 }
 
@@ -141,5 +141,11 @@ nav {
 .profile-big-img{
     width: 150px; 
     height: 150px; 
+    object-fit: cover;
+}
+
+.review-profile-img {
+    width: 50px; 
+    height: 50px; 
     object-fit: cover;
 }

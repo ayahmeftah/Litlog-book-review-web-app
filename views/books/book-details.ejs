@@ -21,27 +21,34 @@
                     <!-- buttons under the book cover image -->
                     <% if (user && user._id.toString()===foundBook.authorId._id.toString()) { %>
                         <div class="w-75 d-flex flex-column align-items-center">
-                            <form action="/books/<%= foundBook._id %>/edit" method="get" class="w-100 delete-edit-btn">
-                                <button class="btn btn-warning py-3 w-100">Edit</button>
+                            <form action="/books/<%= foundBook._id %>/edit" method="get" class="w-100">
+                                <button class="btn delete-edit-btn btn-warning py-3 w-100">Edit</button>
                             </form>
-                            <form action="/books/<%= foundBook._id %>?_method=delete" method="post" class="w-100 delete-edit-btn">
-                                <button class="btn btn-danger py-3 w-100">Delete</button>
+                            <form action="/books/<%= foundBook._id %>?_method=delete" method="post" class="w-100">
+                                <button class="btn delete-edit-btn btn-danger py-3 w-100">Delete</button>
                             </form>
                         </div>
                     <% } else if (user) { %>
 
-                            <button class="btn <%= btnClass %> shelf-btn w-75 py-3" data-bs-toggle="modal" data-bs-target="#shelfModal">
+                            <button class="btn <%= btnClass %> shelf-btn btn w-75 py-3" data-bs-toggle="modal" data-bs-target="#shelfModal">
                             <%= label %>
                             </button>
+                    <% } else if (!user) { %>
+                            <form action="/auth/sign-up" method="get" class="w-75">
+                                <button class="btn btn-outline-secondary shelf-btn py-3 w-100">
+                                    Add to Shelf ▼
+                                </button>
+                            </form>
+                            
                     <% } %>
 
                     <% if ( userBookList && (userBookList.status==="reading" || userBookList.status==="read" ) ) { %>
-                            <button class="btn btn-info shelf-btn w-75 py-3 mt-2" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                            <button class="btn btn-info shelf-btn w-75 py-3" data-bs-toggle="modal" data-bs-target="#reviewModal">
                                 <%= userReview ? "Edit Review" : "Add Review" %>
                             </button>
                             <% if (userReview) { %>
-                                <form action="/books/<%= foundBook._id %>/reviews/<%= userReview._id %>?_method=DELETE" method="POST" class="w-75 mt-2">
-                                    <button type="submit" class="btn btn-outline-danger w-100 py-2">Delete Review</button>
+                                <form action="/books/<%= foundBook._id %>/reviews/<%= userReview._id %>?_method=DELETE" method="POST" class="w-75">
+                                    <button type="submit" class="btn btn-info delete-edit-btn btn-danger py-3 w-100">Delete Review</button>
                                 </form>
                             <% } %>
 
@@ -82,34 +89,45 @@
                         <div class="mt-5">
                             <div class="d-flex justify-content-between align-items-center">
                             <h4>Recent Reviews</h4>
-                            <a href="/books/<%= foundBook._id %>/reviews" class="btn btn-link">View All</a>
+                            <% if (user) { %>
+                                <a href="/books/<%= foundBook._id %>/reviews" class="btn btn-link">View More</a>
+                            <% } else { %>
+                                <a href="/auth/sign-up" class="btn btn-link">Sign Up to View More</a>
+                            <% } %>
                         </div>
                         <% reviews.forEach(review => { %>
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h6 class="card-subtitle text-muted">
-                                    <%= review.userId.username %>
-                                    <br>
-                                    <span class="ms-3">
-                                        <% for (let i = 1; i <= 5; i++) { %>
-                                            <span class="star"><%= i <= review.rating ? '★' : '☆' %></span>
-                                        <% } %>
-                                    </span>
-                                </h6>
+                            <div class="card mb-3 position-relative">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="d-flex">
+                                            <img src="<%= review.userId.profilePic %>" alt="<%= review.userId.username %> profile picture" class="rounded-circle img-thumbnail me-2 review-profile-img">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <strong><%= review.userId.name %></strong>
+                                                <span class="text-muted small">@<%= review.userId.username %></span>
+                                            </div>
+                                        </div>
+
+                                    <% if (userReview) { %>
+                                        <form action="/books/<%= foundBook._id %>/reviews/<%= userReview._id %>?_method=delete" method="post" class="m-0">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                        </form>
+                                    <% } %>
+                                </div>
+
+                                <div class="mt-2">
+                                    <% for (let i = 1; i <= 5; i++) { %>
+                                        <span class="star"><%= i <= review.rating ? '★' : '☆' %></span>
+                                    <% } %>
+                                </div>
+
                                 <p class="card-text mt-2"><%= review.comment %></p>
                                 <p class="text-muted small"><%= review.createdAt.toLocaleDateString() %></p>
-                                <% if (userReview) { %>
-                                    <form action="/books/<%= foundBook._id %>/reviews/<%= userReview._id %>?_method=delete" method="post" class="w-75 mt-2">
-                                        <button type="submit">Delete Review</button>
-                                    </form>
-                                <% } %>
                             </div>
                         </div>
                     <% }) %>
-                </div>
             <% } else { %>
                 <div class="mt-5">
-                    <h4>Reviews</h4>
+                    <h4>Recent Reviews</h4>
                     <p class="text-muted">No reviews yet.</p>
                 </div>
             <% } %>
@@ -152,7 +170,7 @@
             <div class="modal-dialog">
                 <form id="reviewForm" action="/books/<%= foundBook._id %>/reviews<%= userReview ? '/' + userReview._id + '?_method=put' : '' %>" method="post" class="modal-content">
                     <% if (userReview) { %>
-                        <input type="hidden" name="_method" value="PUT">
+                        <input type="hidden" name="_method" value="pust">
                     <% } %>
                     <div class="modal-header">
                         <h5 class="modal-title"><%= userReview ? 'Edit Your Review' : 'Add a Review' %></h5>
