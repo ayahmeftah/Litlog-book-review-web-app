@@ -43,7 +43,7 @@ router.post("/", requireAuthor, uploadBookCover.single("bookImage"), async (req,
         })
 
         await newBook.save()
-        res.redirect("/books")
+        res.redirect("/users/my-books")
     } catch (error) {
         console.log("Book creation error:", error)
         res.render("books/new.ejs", { error: "Something went wrong. Please try again." })
@@ -131,7 +131,7 @@ router.delete('/:id', requireAuthor, async (req, res) => {
 
         await Book.findByIdAndDelete(book._id)
 
-        res.redirect("/books")
+        res.redirect("/users/my-books")
     } catch (error) {
         console.log("Delete book error:", error)
         res.redirect("/books")
