@@ -5,28 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css" />
-    <title>Reviews</title>
+    <title>My Reviews</title>
 </head>
 <body>
 <%- include("../partials/navbar") %>
 
 <div class="container mt-5">
-  <h3><%= user %> Reviews</h3>
+  <div class="mt-4">
+      <a href="/users/profile" class="btn btn-outline-primary">← Back to Profile</a>
+    </div> <br>
+  <h3>My Reviews</h3>
 
   <% if (userReviews.length === 0) { %>
     <p class="text-muted">You haven't submitted any reviews yet.</p>
   <% } else { %>
     <% userReviews.forEach(review => { %>
-      <div class="card mb-3">
+      <div class="card mb-3 position-relative">
         <div class="card-body">
-          <h5><%= review.bookId.title %></h5>
+          <small class="text-muted position-absolute top-0 end-0 m-2">
+            <%= new Date(review.createdAt).toLocaleDateString() %>
+          </small>
+          <h5>Book Title: <strong><%= review.bookId.title %></strong></h5>
           <p>
             <% for (let i = 1; i <= 5; i++) { %>
               <span class="star"><%= i <= review.rating ? '★' : '☆' %></span>
             <% } %>
           </p>
           <p><%= review.comment %></p>
-          <a href="/books/<%= review.bookId._id %>" class="btn btn-outline-primary">View Book</a>
+          <div class="d-flex justify-content-end gap-2 mt-3">
+            <a href="/books/<%= review.bookId._id %>" class="btn btn-outline-primary btn-sm">View Book</a>
+            <form action="/books/<%= review.bookId._id %>/reviews/<%= review._id %>?_method=delete" method="post">
+              <button type="submit" class="btn btn-outline-danger btn-sm">Delete Review</button>
+            </form>
+          </div>
         </div>
       </div>
     <% }) %>
