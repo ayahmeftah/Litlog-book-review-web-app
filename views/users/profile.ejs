@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css" />
-    <title>Document</title>
+    <title><%= user.name %>'s Profile</title>
 </head>
 <body>
 <%- include("../partials/navbar") %>
@@ -21,15 +21,15 @@
     <a href="/users/profile/edit" class="btn btn-outline-primary mb-3">Edit Profile</a>
     
     <div class="d-grid gap-2 col-md-4 mx-auto">
-      <a href="/users/my-reviews" class="btn btn-primary">My Reviews</a>
-      <a href="/users/my-bookshelves" class="btn btn-secondary">Bookshelf (<%= totalBooks %>)</a>
-      <a href="/users/my-bookshelves/to-read" class="btn btn-outline-dark">Want to Read</a>
-      <a href="/users/my-bookshelves/reading" class="btn btn-outline-dark">Currently Reading</a>
-      <a href="/users/my-bookshelves/read" class="btn btn-outline-dark">Read</a>
-
+      <a href="/users/my-reviews" class="btn btn-info">My Reviews</a>
       <% if (user.role === "author") { %>
         <a href="/users/my-books" class="btn btn-warning">My Books</a>
       <% } %>
+      <a href="/users/my-bookshelves" class="btn btn-secondary">Bookshelves (<%= totalBooks %> Books)</a>
+      <a href="/users/my-bookshelves/to-read" class="btn btn-outline-dark">Want to Read (<%= statusCounts.wishlist %> Books)</a>
+      <a href="/users/my-bookshelves/reading" class="btn btn-outline-dark">Currently Reading (<%= statusCounts.reading %> Books)</a>
+      <a href="/users/my-bookshelves/read" class="btn btn-outline-dark">Read (<%= statusCounts.completed %> Books)</a>
+
 
       <form action="/users/delete-account?_method=delete" method="post">
         <button type="submit" class="btn btn-danger">Delete Account</button>

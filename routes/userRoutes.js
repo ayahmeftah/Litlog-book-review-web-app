@@ -11,9 +11,23 @@ const cloudinary = require("cloudinary").v2
 router.get("/profile", requireLogin, async (req, res) => {
     try {
         const user = await User.findById(req.session.user._id)
-        const totalBooks = user.bookList.length
 
-        res.render("users/profile.ejs", { user, totalBooks })
+        const bookList = user.bookList || []
+
+        const statusCounts = {
+            reading: 0,
+            completed: 0,
+            wishlist: 0
+        }
+
+        for (let item of bookList) {
+            const status = item.status?.toLowerCase()
+            if (statusCounts[status] !== undefined) {
+                statusCounts[status]++
+            }
+        }
+        const totalBooks = bookList.length
+        res.render("users/profile.ejs", { user, totalBooks, statusCounts })
 
     } catch (error) {
         console.log("Get profile error:", error)
@@ -141,41 +155,41 @@ router.get("/my-reviews", requireLogin, async (req, res) => {
 
     try {
         const userReviews = await Review.find({ userId: req.session.user._id }).populate("bookId").sort({ createdAt: -1 })
-    const user = req.session.user.username
-    res.render("users/my-reviews.ejs", { userReviews, user })
+        const user = req.session.user.username
+        res.render("users/my-reviews.ejs", { userReviews, user })
     } catch (error) {
         console.log("Get user reviews error:", error)
         res.render("users/profile.ejs")
     }
-    
+
 })
 
 router.get("/my-bookshelves", requireLogin, async (req, res) => {
     try {
         const user = await User.findById(req.session.user._id).populate({ path: "bookList.bookId", populate: { path: "authorId" } })
 
-    res.render("users/bookshelves.ejs", { user, books: user.bookList })
+        res.render("users/bookshelves.ejs", { user, books: user.bookList })
     } catch (error) {
         console.log("Get user bookshelves error:", error)
         res.render("users/profile.ejs")
     }
-    
+
 })
 
 router.get("/my-bookshelves/:status", requireLogin, async (req, res) => {
 
     try {
         const status = req.params.status
-    const user = await User.findById(req.session.user._id).populate({ path: "bookList.bookId", populate: { path: "authorId" } })
+        const user = await User.findById(req.session.user._id).populate({ path: "bookList.bookId", populate: { path: "authorId" } })
 
-    const filtered = user.bookList.filter(b => b.status === status)
+        const filtered = user.bookList.filter(b => b.status === status)
 
-    res.render("users/bookshelf-filter.ejs", { user, books: filtered, status })
+        res.render("users/bookshelf-filter.ejs", { user, books: filtered, status })
     } catch (error) {
         console.log("Get user filtered bookshelves error:", error)
         res.render("users/profile.ejs")
     }
-    
+
 })
 
 router.get("/my-books", requireLogin, async (req, res) => {
@@ -183,18 +197,18 @@ router.get("/my-books", requireLogin, async (req, res) => {
     try {
         const user = await User.findById(req.session.user._id)
 
-    if (user.role !== "author") {
-        return res.redirect("/users/profile")
-    }
+        if (user.role !== "author") {
+            return res.redirect("/users/profile")
+        }
 
-    const books = await Book.find({ authorId: user._id })
+        const books = await Book.find({ authorId: user._id })
 
-    res.render("users/my-books.ejs", { books })
+        res.render("users/my-books.ejs", { books })
     } catch (error) {
         console.log("Get author books error:", error)
         res.render("users/profile.ejs")
     }
-    
+
 })
 
 router.delete("/delete-account", requireLogin, async (req, res) => {
