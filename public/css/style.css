@@ -136,7 +136,7 @@ nav {
     width:120px; 
     height:210px; 
     object-fit:cover; 
-    margin-right: 1rem;
+    margin-right: 16px;
 }
 
 .profile-big-img{
@@ -149,4 +149,44 @@ nav {
     width: 50px; 
     height: 50px; 
     object-fit: cover;
+}
+
+.signup-container {
+    background-color: #e0ddd3;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 5px black;
+    font-family: "Poppins", sans-serif;
+}
+
+.signup-container h2 {
+    font-weight: 600;
+}
+
+.signup-container label {
+    font-weight: 500;
+}
+
+.signup-container .form-control,
+.signup-container .form-select {
+    border-radius: 6px;
+}
+
+.signup-container button[type="submit"] {
+    background-color: #8a836c;
+    color: rgb(251, 251, 251);
+    border: none;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.signup-container button[type="submit"]:hover {
+    background-color: #a19d8d;
+}
+
+
+.signup-link {
+    font-family: "Poppins", sans-serif;
+    font-size: 15.2px;
 }
