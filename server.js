@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 connectToDB()
 
 // Routes
-app.use('/', (req,res)=>{
+app.get('/', (req,res)=>{
   res.redirect('/books/home')
 })
 app.use("/books", booksRoutes)
