@@ -8,6 +8,7 @@ const uploadProfilePic = setupMulter("profile-pictures")
 const bcrypt = require("bcrypt")
 const cloudinary = require("cloudinary").v2
 
+// get for user profile
 router.get("/profile", requireLogin, async (req, res) => {
     try {
         const user = await User.findById(req.session.user._id)
