@@ -155,7 +155,7 @@ router.get("/my-reviews", requireLogin, async (req, res) => {
 
     try {
         const userReviews = await Review.find({ userId: req.session.user._id }).populate("bookId").sort({ createdAt: -1 })
-        const user = req.session.user.username
+        const user = await User.findById(req.session.user._id)
         res.render("users/my-reviews.ejs", { userReviews, user })
     } catch (error) {
         console.log("Get user reviews error:", error)

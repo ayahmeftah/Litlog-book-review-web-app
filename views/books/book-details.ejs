@@ -107,11 +107,7 @@
                                             </div>
                                         </div>
 
-                                    <% if (userReview) { %>
-                                        <form action="/books/<%= foundBook._id %>/reviews/<%= userReview._id %>?_method=delete" method="post" class="m-0">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-                                        </form>
-                                    <% } %> 
+                                    <small class="text-muted"><%= new Date(review.createdAt).toLocaleDateString() %></small>
                                 </div>
 
                                 <div class="mt-2">
@@ -121,7 +117,7 @@
                                 </div>
 
                                 <p class="card-text mt-2"><%= review.comment %></p>
-                                <p class="text-muted small"><%= review.createdAt.toLocaleDateString() %></p>
+                                
                             </div>
                         </div>
                     <% }) %>

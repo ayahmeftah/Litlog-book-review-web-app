@@ -105,7 +105,7 @@ router.post("/sign-up", uploadProfilePic.single("profilePic"), async (req, res) 
       role: newUser.role
     }
     
-    return res.redirect("/books");
+    return res.redirect("/books/home");
 
   } catch (error) {
     console.log("Signup error:", error);
@@ -155,7 +155,7 @@ router.post("/login", async (req, res) => {
       role: user.role
     };
 
-    res.redirect("/books")
+    res.redirect("/books/home")
   } catch (error) {
     console.log("Login error:", error.message, error.stack)
     res.render("auth/login.ejs", {

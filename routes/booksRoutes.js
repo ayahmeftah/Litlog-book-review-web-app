@@ -76,7 +76,7 @@ router.get("/home", async (req, res) => {
 })
 
 // Get all books
-router.get('/', async (req, res) => {
+router.get('/', requireLogin,async (req, res) => {
     try {
         const books = await Book.find().populate("authorId")
         res.render("books/all-books.ejs", { books })
@@ -119,7 +119,7 @@ router.post("/", requireAuthor, uploadBookCover.single("bookImage"), async (req,
 })
 
 // Get the book details
-router.get("/:id", async (req, res) => {
+router.get("/:id", requireLogin,async (req, res) => {
     try {
         const foundBook = await Book.findById(req.params.id).populate("authorId")
 
@@ -315,7 +315,7 @@ router.post("/:id/shelf", requireLogin, async (req, res) => {
 
 
 // Get for viewing all the reviews of a certian book
-router.get("/:id/reviews", async (req, res) => {
+router.get("/:id/reviews", requireLogin,async (req, res) => {
     try {
         const bookId = req.params.id
         const foundBook = await Book.findById(bookId)
