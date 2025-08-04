@@ -21,7 +21,58 @@ Litlog is a book review platform designed for both readers and authors. Users ca
 - **User Profile:** Users can manage their account, books and reading list
 - **Top Rated Books:** Highlights the most highly-rated books
 
+### Planning Materials
+
+- [Trello Board - LitLog MEN Stack Website](https://trello.com/invite/b/688a765ce8b55474f5700184/ATTIa50eb833c445c76c98bfa1eb28b576e243881A14/litlog-menstack-website)
+
+## 📚 Books Routes
+
+| HTTP Method | Route                     | Action       | Description                                           |
+|-------------|---------------------------|--------------|-------------------------------------------------------|
+| GET         | /books                    | Index        | Displays a list of all books                         |
+| GET         | /books/new                | New          | Shows a form to create a new book                    |
+| POST        | /books                    | Create       | Creates a new book                                   |
+| GET         | /books/:id                | Show         | Displays details of a specific book                  |
+| GET         | /books/:id/edit           | Edit         | Shows a form to edit a book                          |
+| PUT         | /books/:id                | Update       | Updates a specific book                              |
+| DELETE      | /books/:id                | Destroy      | Deletes a specific book                              |
+| POST        | /books/:id/shelf          | Shelf        | Adds/updates/removes a book in user's bookshelf      |
+| GET         | /books/:id/reviews        | BookReviews  | Shows all reviews for a specific book                |
+| POST        | /books/:id/reviews        | AddReview    | Adds a review for a specific book                    |
+| PUT         | /books/:id/reviews/:rid   | EditReview   | Edits a specific review                              |
+| DELETE      | /books/:id/reviews/:rid   | DeleteReview | Deletes a specific review                            |
+
+## 👤 Users Routes
+
+| HTTP Method | Route                           | Action         | Description                                               |
+|-------------|----------------------------------|----------------|-----------------------------------------------------------|
+| GET         | /users/profile                   | Show Profile   | Displays the logged-in user's profile                    |
+| GET         | /users/profile/edit              | Edit Profile   | Shows a form to edit user profile                        |
+| PUT         | /users/profile/edit              | Update Profile | Updates user profile and optionally changes password     |
+| GET         | /users/my-reviews                | My Reviews     | Displays all reviews written by the user                 |
+| GET         | /users/my-bookshelves            | My Bookshelves | Displays all books in the user's bookshelf               |
+| GET         | /users/my-bookshelves/:status    | Shelf Filter   | Displays books filtered by reading status                |
+| GET         | /users/my-books                  | My Books       | Displays books authored by the user (if role = author)   |
+| DELETE      | /users/delete-account            | Delete Account | Deletes the user account and related data                |
+
+## 🔐 Auth Routes
+
+| HTTP Method | Route         | Action       | Description                                      |
+|-------------|---------------|--------------|--------------------------------------------------|
+| GET         | /auth/sign-up | Sign Up Form | Displays the sign-up form                        |
+| POST        | /auth/sign-up | Register     | Creates a new user and logs them in             |
+| GET         | /auth/login   | Login Form   | Displays the login form                         |
+| POST        | /auth/login   | Login        | Logs in the user and starts a session           |
+| GET         | /auth/logout  | Logout       | Logs out the user and destroys their session    |
+
+
 ## 🚀 Getting Started
+
+### 🔗 Visit the Deployed Website
+
+- [Litlog Books Reviews Website Deployed Link](https://litlog-book-review-web-app.onrender.com)
+
+### 🛠️ Run the Website Locally
 
 ### Prerequisites
 - Node.js
@@ -51,27 +102,44 @@ Litlog is a book review platform designed for both readers and authors. Users ca
 
 4. Start the app:
     ```bash
-    npm
+    npm start
+    ```
 
+5. Visit: http://localhost:3000/books/home
 
+## 🙏 Attributions
 
-Attributions
+- [Bootstrap](https://getbootstrap.com/) for responsive UI components
+- [Cloudinary](https://cloudinary.com/) for image management
+- [Brandmark](https://app.brandmark.io/v3/) for logo generation
+- [Password Validation](https://stackoverflow.com/questions/12090077/javascript-regular-expression-password-validation-having-special-characters) from stacjoverflow
+- [Poppins](https://fonts.google.com/specimen/Poppins) google font
 
-cloudinary and multer
+- Book cover images and descriptions inspired by public sources for demo purposes
 
-- https://dev.to/njong_emy/how-to-store-images-in-mongodb-using-cloudinary-mern-stack-imo
-- https://cloudinary.com/documentation/node_integration
-- https://www.npmjs.com/package/multer
-- https://www.npmjs.com/package/multer-storage-cloudinary
+## 🧠 Technologies Used
+- Node.js + Express (Backend)
 
-password validation
-- https://stackoverflow.com/questions/12090077/javascript-regular-expression-password-validation-having-special-characters
+- MongoDB + Mongoose (Database & ODM)
 
-bootstrap
-- https://getbootstrap.com/docs/5.3/layout/breakpoints/
+- EJS (Templating Engine)
 
-logo generator
-- https://app.brandmark.io/v3/
+- Bootstrap 5 (Frontend Framework)
 
+- Cloudinary (Image Hosting)
 
-- https://litlog-book-review-web-app.onrender.com
+- Multer (File Upload Middleware)
+
+- bcrypt (Password Hashing)
+
+- Express-session (Authentication)
+
+- Method-override (PUT/DELETE in forms)
+
+## 🚧 Future Enhancements
+
+- Personalized book recommendations based on users’ favorite genres and reading history.  
+- Community discussion feature allowing users to comment on and reply to reviews.  
+- Reading challenges dashboard (e.g., “Read 15 books in 3 months”) with progress tracking.  
+- Notification system for replies, challenge milestones, and new books in preferred genres.  
+- Follow system to connect with users who share similar reading interests.
