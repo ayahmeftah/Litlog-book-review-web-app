@@ -143,7 +143,7 @@ router.get("/:id", requireLogin,async (req, res) => {
         let label = "Add to Shelf ▼"
         let btnClass = "btn-outline-secondary"
 
-        if (userBookList?.status === "want to read") {
+        if (userBookList?.status === "to-read") {
             label = "Want to Read ▼"
             btnClass = "btn-primary"
         } else if (userBookList?.status === "reading") {
