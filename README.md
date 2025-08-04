@@ -30,6 +30,7 @@ Litlog is a book review platform designed for both readers and authors. Users ca
 | HTTP Method | Route                     | Action       | Description                                           |
 |-------------|---------------------------|--------------|-------------------------------------------------------|
 | GET         | /books                    | Index        | Displays a list of all books                         |
+| GET         | /book/home                | Home         | Displays home page with recommended books            |
 | GET         | /books/new                | New          | Shows a form to create a new book                    |
 | POST        | /books                    | Create       | Creates a new book                                   |
 | GET         | /books/:id                | Show         | Displays details of a specific book                  |
@@ -37,10 +38,10 @@ Litlog is a book review platform designed for both readers and authors. Users ca
 | PUT         | /books/:id                | Update       | Updates a specific book                              |
 | DELETE      | /books/:id                | Destroy      | Deletes a specific book                              |
 | POST        | /books/:id/shelf          | Shelf        | Adds/updates/removes a book in user's bookshelf      |
-| GET         | /books/:id/reviews        | BookReviews  | Shows all reviews for a specific book                |
-| POST        | /books/:id/reviews        | AddReview    | Adds a review for a specific book                    |
-| PUT         | /books/:id/reviews/:rid   | EditReview   | Edits a specific review                              |
-| DELETE      | /books/:id/reviews/:rid   | DeleteReview | Deletes a specific review                            |
+| GET         | /books/:id/reviews        | Book Reviews  | Shows all reviews for a specific book                |
+| POST        | /books/:id/reviews        | Add Review    | Adds a review for a specific book                    |
+| PUT         | /books/:id/reviews/:rid   | Edit Review   | Edits a specific review                              |
+| DELETE      | /books/:id/reviews/:rid   | Delete Review | Deletes a specific review                            |
 
 ## 👤 Users Routes
 
