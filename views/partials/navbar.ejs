@@ -1,17 +1,46 @@
-<nav class="navbar navbar-expand-lg sticky-top px-4">
-  <div class="container-fluid">
-    <a href="/books" class="navbar-brand d-flex align-items-center">
+<nav class="navbar navbar-expand-lg sticky-top px-4 shadow-sm" style="background-color: #d8d6cc;">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <a href="/books/home" class="navbar-brand d-flex align-items-center me-4">
       <img src="/images/litlog-logo2.png" alt="Litlog Website Logo" class="logo-img">
     </a>
 
-    <div class="ms-auto d-flex align-items-center">
-      <% if (user) { %>
-        <span class="me-3">Welcome, <strong><%= user.name %></strong></span>
-        <a href="/auth/logout">Logout</a>
-      <% } else { %>
-        <a href="/auth/sign-up">Sign Up</a> |
-        <a href="/auth/login">Login</a>
-      <% } %>
+    <div class="d-flex align-items-center flex-grow-1">
+      <ul class="navbar-nav d-flex flex-row align-items-center">
+        <li class="nav-item me-4">
+          <a class="nav-link" href="/books/home">Home</a>
+        </li>
+
+        <% if (!user) { %>
+          <li class="nav-item me-4">
+            <a class="nav-link" href="/auth/sign-up">Sign Up</a>
+          </li>
+          <li class="nav-item me-4">
+            <a class="nav-link" href="/auth/login">Login</a>
+          </li>
+          <% } else { %>
+            <li class="nav-item me-4">
+              <a class="nav-link" href="/books">Books</a>
+            </li>
+            <li class="nav-item me-4">
+              <a class="nav-link" href="/users/my-bookshelves">Bookshelves</a>
+            </li>
+            <% if (user.role==='author' ) { %>
+              <li class="nav-item me-4">
+                <a class="nav-link" href="/users/my-books">My Books</a>
+              </li>
+              <% } %>
+                <li class="nav-item me-4">
+                  <a class="nav-link" href="/users/profile">Profile</a>
+                </li>
+            <% } %>
+      </ul>
+
     </div>
+
+    <% if (user) { %>
+      <div class="d-flex align-items-center ms-4">
+        <a class="nav-link text-danger" href="/auth/logout">Logout</a>
+      </div>
+      <% } %>
   </div>
 </nav>

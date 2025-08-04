@@ -236,3 +236,27 @@ nav {
     height: 45px; 
     object-fit: cover;
 }
+
+.navbar {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.navbar .nav-link {
+  color: #333;
+  transition: color 0.2s ease-in-out;
+}
+
+.navbar .nav-link:hover {
+  color: #5e5a4e;
+  text-decoration: underline;
+}
+
+.navbar .nav-link.text-danger:hover {
+  color: #c0392b;
+}
+
+.navbar-nav .nav-item {
+  margin-right: 24px;
+}
