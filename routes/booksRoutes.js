@@ -7,6 +7,74 @@ const cloudinary = require("../config/cloudinary")
 const User = require("../models/User")
 const Review = require("../models/Review")
 
+router.get("/home", async (req, res) => {
+    try {
+        const userId = req.session.user ? req.session.user._id : null
+
+        const allBooks = await Book.find().populate("authorId")
+        const allReviews = await Review.find()
+
+        const ratingsMap = {}
+
+        for (let i = 0; i < allReviews.length; i++) {
+            const review = allReviews[i]
+            const bookId = review.bookId ? review.bookId.toString() : null
+
+            if (!bookId) {
+                continue
+            }
+
+            if (!ratingsMap[bookId]) {
+                ratingsMap[bookId] = { total: 0, count: 0 }
+            }
+
+            ratingsMap[bookId].total += review.rating
+            ratingsMap[bookId].count++
+        }
+
+        for (let i = 0; i < allBooks.length; i++) {
+            const book = allBooks[i]
+            const stats = ratingsMap[book._id.toString()]
+            book.average = stats ? stats.total / stats.count : 0
+            book.reviewCount = stats ? stats.count : 0
+        }
+
+        allBooks.sort(function (a, b) {
+            if (b.average === a.average) {
+                return b.reviewCount - a.reviewCount
+            }
+            return b.average - a.average
+        });
+
+        const featuredBook = allBooks.length > 0 ? allBooks[0] : null
+
+        let topReview = null
+
+        if (featuredBook) {
+            topReview = await Review.findOne({bookId: featuredBook._id, rating: 5}).populate("userId")
+        }
+
+        const recommendedBooks = []
+
+        for (let i = 0; i < allBooks.length; i++) {
+            const book = allBooks[i]
+
+            if (featuredBook && book._id.toString() === featuredBook._id.toString()) {
+                continue
+            }
+            recommendedBooks.push(book)
+
+            if (recommendedBooks.length === 6) break
+        }
+
+        res.render("books/home.ejs", {featuredBook,topReview,recommendedBooks})
+
+    } catch (error) {
+        console.error("Error in /books/home:", error);
+        res.render("books/home.ejs", {featuredBook: null,topReview: null,recommendedBooks: []})
+    }
+})
+
 // Get all books
 router.get('/', async (req, res) => {
     try {

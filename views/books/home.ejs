@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+   <link rel="stylesheet" href="/css/style.css" />
+    <title>Litog - Home</title>
+</head>
+<body>
+  <%- include("../partials/navbar") %>
+
+  <section class="featured-book-section position-relative">
+    <div class="dark-overlay"></div>
+    <div class="container featured-book-content py-5">
+      <% if (featuredBook) { %>
+        <div class="row align-items-start">
+          <div class="col-md-4 mb-3">
+            <img src="<%= featuredBook.BookImage %>" alt="Book Cover" class="img-fluid rounded shadow book-home" />
+          </div>
+          <div class="col-md-8">
+            <div class="bg-white text-dark p-4 rounded mb-3">
+              <h2><%= featuredBook.title %></h2>
+              <p><strong>Author:</strong> <%= featuredBook.authorId.name %></p>
+              <p><strong>Genre:</strong> <%= featuredBook.genre %></p>
+              <p><strong>Average Rating:</strong> <%= featuredBook.average.toFixed(1) %> ⭐</p>
+              <p>
+                <a href="/books/<%= featuredBook._id %>/reviews">
+                  <strong><%= featuredBook.reviewCount %></strong> Reviews
+                </a>
+              </p>
+            </div>
+
+            <% if (topReview) { %>
+              <div class="bg-white text-dark p-4 rounded mb-3">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <div class="d-flex">
+                    <img src="<%= topReview.userId.profilePic %>" alt="Profile" class="rounded-circle me-2 profile-home-pic">
+                    <div>
+                      <strong><%= topReview.userId.name %></strong><br>
+                      <small class="text-muted">@<%= topReview.userId.username %></small>
+                    </div>
+                  </div>
+                  <small class="text-muted"><%= new Date(topReview.createdAt).toLocaleDateString() %></small>
+                </div>
+
+                <div class="mb-2">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <span class="star"><%= i <= topReview.rating ? '★' : '☆' %></span>
+                  <% } %>
+                </div>
+
+                <p><%= topReview.comment %></p>
+              </div>
+            <% } %>
+
+            <div class="text-end">
+              <a href="/books/<%= featuredBook._id %>" class="btn btn-primary">View Book</a>
+            </div>
+          </div>
+        </div>
+      <% } else { %>
+        <p class="text-center text-white">No featured book to display.</p>
+      <% } %>
+    </div>
+  </section>
+
+  <section class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="mb-0">Recommended Books</h3>
+  <a href="/books" class="btn btn-sm btn-outline-primary">View More</a>
+  </div>
+
+    <% if (recommendedBooks.length > 0) { %>
+      <div class="row mb-4">
+        <% recommendedBooks.forEach((book, i) => { %>
+          <% if (i % 3 === 0 && i !== 0) { %></div><div class="row mb-4"><% } %>
+          <div class="col-md-4">
+            <div class="card d-flex flex-row align-items-center p-2">
+              <img src="<%= book.BookImage %>" alt="Cover" class="book-img-card-home">
+              <div class="ms-2">
+                <h5 class="mb-1"><%= book.title %></h5>
+                <p class="mb-1"><strong>Author:</strong> <%= book.authorId.name %></p>
+                <p class="mb-1"><strong>Genre:</strong> <%= book.genre %></p>
+                <p class="mb-1"><strong>Rating:</strong> <%= book.average.toFixed(1) %> / 5</p>
+                <p class="mb-2"><strong>Year:</strong> <%= book.yearOfPublication %></p>
+                <a href="/books/<%= book._id %>" class="btn btn-sm btn-outline-primary">View Book</a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="text-muted text-center">No recommended books found.</p>
+    <% } %>
+  </section>
+</body>
+</html>
