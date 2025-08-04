@@ -7,7 +7,7 @@ Litlog is a book review platform designed for both readers and authors. Users ca
 <img width="1897" height="892" alt="Image" src="https://github.com/user-attachments/assets/448de8ee-e042-49bf-b26b-ffbafcda1571" />
 
 <img width="1900" height="904" alt="Image" src="https://github.com/user-attachments/assets/f9f9cc80-43a9-4c1b-b197-925ac5fb6974" />
-*A dynamic web application where readers and authors meet to share, rate, and review books.*
+
 
 ## 📌 Features
 
@@ -118,22 +118,15 @@ Litlog is a book review platform designed for both readers and authors. Users ca
 - Book cover images and descriptions inspired by public sources for demo purposes
 
 ## 🧠 Technologies Used
+
 - Node.js + Express (Backend)
-
 - MongoDB + Mongoose (Database & ODM)
-
 - EJS (Templating Engine)
-
 - Bootstrap 5 (Frontend Framework)
-
 - Cloudinary (Image Hosting)
-
 - Multer (File Upload Middleware)
-
 - bcrypt (Password Hashing)
-
 - Express-session (Authentication)
-
 - Method-override (PUT/DELETE in forms)
 
 ## 🚧 Future Enhancements
